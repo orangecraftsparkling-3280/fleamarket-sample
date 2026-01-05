@@ -1,16 +1,25 @@
-/node_modules
-/public/hot
-/public/storage
-/storage/*.key
-/vendor
-.env
-.env.backup
-.phpunit.result.cache
-docker-compose.override.yml
-Homestead.json
-Homestead.yaml
+# Node
+/src/node_modules
 npm-debug.log
 yarn-error.log
+
+# Laravel
+/src/vendor
+/src/.env
+/src/.env.backup
+/src/public/hot
+/src/public/storage
+/src/storage/*.key
+/src/.phpunit.result.cache
+
+# Docker
+/docker/mysql/data/
+docker-compose.override.yml
+
+# Homestead
+Homestead.json
+Homestead.yaml
+
+# IDE
 /.idea
 /.vscode
-docker/mysql/data/
