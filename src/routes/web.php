@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\AuthController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +18,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [ItemController::class, 'index'])->name('index');
+Route::get('/item/{id}', [ItemController::class, 'show'])->name('item.show');
+// ログイン中のみコメントできるようにミドルウェアを設定
+Route::post('/item/{item_id}/comment', [CommentController::class, 'store'])
+    ->name('comment.store')
+    ->middleware('auth');
+// 商品購入画面の表示
+Route::get('/purchase/{id}', [PurchaseController::class, 'index'])
+    ->name('purchase')
+    ->middleware('auth');
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+

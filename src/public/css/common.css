@@ -1,0 +1,63 @@
+.site-header {
+    display: flex;
+    align-items: center; /* 上下中央揃え */
+    justify-content: space-between; /* 要素を左右・中央に配置 */
+    padding: 10px 20px;
+    background-color: #000000; /* 背景黒 */
+    border-bottom: 1px solid #ddd;
+}
+
+/* 1. ロゴエリア（左側） */
+.header-logo {
+    flex: 1; /* 左右に同じ比率(1)を割り当てる */
+    display: flex;
+    justify-content: flex-start;
+}
+
+.header-logo img {
+    height: 40px; /* 高さを指定すると安定します */
+    vertical-align: middle;
+}
+
+/* 2. 検索フォームエリア（中央） */
+.header-search-container {
+    flex: 2; /* 中央は少し広めに確保 */
+    display: flex;
+    justify-content: center; /* 中身を中央寄せにする */
+}
+
+.header-search {
+    width: 100%;
+    max-width: 600px; /* 広がりすぎ防止 */
+}
+
+.header-search input {
+    width: 100%;
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* 3. ナビエリア（右側） */
+.header-nav {
+    flex: 1; /* 左右に同じ比率(1)を割り当てる */
+    display: flex;
+    justify-content: flex-end; /* 右寄せ */
+    gap: 20px;
+    align-items: center;
+}
+
+.header-nav a {
+    text-decoration: none;
+    color: #fff; /* 背景が黒なので白文字 */
+    font-size: 14px;
+}
+
+.listing-btn {
+    border: none;
+    font-size: 14px;
+    padding: 2px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap; /* 改行防止 */
+}

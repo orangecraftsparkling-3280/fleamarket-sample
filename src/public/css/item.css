@@ -1,0 +1,119 @@
+/* 全体の外枠：大画面でも広がりすぎないように制限 */
+.container {
+    max-width: 1200px; /* コンテンツ自体の最大幅を固定 */
+    margin: 0 auto;    /* 左右中央寄せ */
+    padding: 40px 20px;
+}
+
+/* 2カラムレイアウト */
+.item-detail-layout {
+    display: flex;
+    justify-content: space-between; /* 左右に分散 */
+    align-items: flex-start;
+    gap: 120px; /* 大画面で見栄えが良い広めの余白 */
+}
+
+/* 左側：商品画像セクション */
+.item-image-section {
+    flex: 0 0 500px; /* 画像の幅を固定、または最大値を決める */
+    max-width: 100%;
+}
+
+.item-image-section img {
+    width: 100%;
+    height: 500px;   /* 指定のサイズを維持 */
+    object-fit: cover; /* 画像の比率を保ちつつ枠に収める */
+    display: block;
+}
+
+/* 右側：商品情報セクション */
+.item-info-section {
+    flex: 1; /* 残りの幅をすべて使う */
+    min-width: 400px; /* 狭くなりすぎないように制限 */
+}
+
+/* 各アイコン＋数字の縦並びセット */
+
+.action-icons {
+    display: flex;       /* 横に並べる */
+    flex-direction: row; /* 明示的に横方向を指定 */
+    gap: 40px;          /* アイコン同士の隙間 */
+    margin: 20px 0;
+    align-items: flex-start;
+}
+
+.icon-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60px; /* 幅を固定して大画面でのブレを防ぐ */
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 0;
+    display: block;
+    transition: transform 0.1s;
+}
+
+.icon-btn:hover {
+    transform: scale(1.05); /* 少しだけ動かすことで「押せる」感を出す */
+}
+
+/* 画像サイズ（ハートとふきだしのサイズを統一） */
+.icon-btn img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+}
+
+/* 数字（カウント）のスタイル */
+.count {
+    font-size: 14px;
+    color: #333;
+    margin-top: 8px; /* アイコンとの距離 */
+}
+
+/* カテゴリーを包むコンテナ */
+.category-list {
+    display: flex;
+    flex-wrap: wrap; /* 数が多い時に自動で改行する */
+    gap: 10px;       /* バッジ同士の間隔 */
+}
+
+/* カテゴリーバッジの装飾 */
+.category-badge {
+    background-color: #f5f5f5; /* 薄いグレー */
+    color: #333;               /* 文字色 */
+    padding: 4px 14px;
+    border-radius: 100px;      /* 左右を丸くする */
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-block;
+    border: 1px solid #ddd;    /* 軽い枠線 */
+    white-space: nowrap;       /* バッジ内での改行を防止 */
+}
+
+/* テーブルのスタイル調整（大画面1540px対応） */
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.info-table th {
+    width: 140px; /* 見出しの幅を固定 */
+    text-align: left;
+    padding: 15px 0;
+    vertical-align: top;
+    font-weight: bold;
+    color: #333;
+}
+
+.info-table td {
+    padding: 15px 0;
+}

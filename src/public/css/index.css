@@ -1,0 +1,98 @@
+/* 全体の外枠 */
+.container {
+    width: 100%;
+    /* PCでの最大幅。1540pxの画面でもこの幅の中に収まり中央に配置される */
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box; /* 余白を含めて幅を計算する設定 */
+}
+
+/* タブ全体のコンテナ */
+.list-tab {
+    display: flex;
+    gap: 20px; /* タブ間の余白 */
+    margin-bottom: 20px;
+    border-bottom: 2px solid #717171; /* ここが全体の薄いアンダーライン */
+    padding-left: 120px;
+}
+
+/* 各タブの基本スタイル */
+.list-tab a {
+    text-decoration: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    position: relative;
+    top: 2px; /* 全体の下線と重ねるための調整 */
+}
+
+/* 選択されているタブのスタイル */
+.list-tab a.active {
+    color: #ff4d4d; /* アクティブ時の文字色（例：赤） */
+}
+
+/* 商品一覧グリッド */
+.item-grid {
+    display: grid;
+    /* 常に「4列」を維持。各列の幅は均等に分配 */
+    grid-template-columns: repeat(4, 1fr);
+    /* 商品間の余白 */
+    gap: 30px;
+    padding: 40px 0;
+}
+
+/* 商品カード */
+.item-card {
+    display: block;
+    text-decoration: none;
+    color: #333;
+}
+
+/* 画像を正方形に固定 */
+.item-image-wrapper {
+    width: 100%;
+    /* 高さを横幅と同じにする（JS不要で正方形を維持） */
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 4px;
+    background-color: #f5f5f5;
+}
+
+.item-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    /* 画像の比率を崩さず、枠いっぱいに表示 */
+    object-fit: cover;
+}
+
+/* 商品名 */
+.item-name {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    /* 文字が長くても1行に収め、はみ出た分は「...」にする */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- レスポンシブ（画面幅が狭くなった時） --- */
+
+/* タブレットサイズ（1024px以下） */
+@media screen and (max-width: 1024px) {
+    .item-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3列にする */
+        gap: 20px;
+    }
+}
+
+/* スマホサイズ（640px以下） */
+@media screen and (max-width: 640px) {
+    .item-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2列にする */
+        gap: 15px;
+    }
+    .item-name {
+        font-size: 14px;
+    }
+}
