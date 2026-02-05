@@ -18,12 +18,14 @@ docker compose exec php php artisan key:generate
 
 ## .envファイル設定
 
+```bash
 DB_CONNECTION=mysql
 DB_HOST=mysql
 DB_PORT=3306
 DB_DATABASE=laravel_db
 DB_USERNAME=laravel_user
 DB_PASSWORD=laravel_pass
+```
 
 # .envファイル設定後実行
 
@@ -36,7 +38,7 @@ docker compose exec php php artisan migrate --seed
 ### Docker環境
 
 Docker 20.x 以上
-Docker Compose 1.29.x 以上 ###コンテナ内サービス
+Docker Compose 1.29.x 以上
 PHP 8.x
 Laravel 10.x
 MySQL 8.0.26
