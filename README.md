@@ -1,6 +1,18 @@
 # coachtechフリマ
 
+![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
+
 ユーザー間で手軽に商品の売買ができる、プラットフォームです。
+
+## 機能一覧
+- ユーザー登録・プロフィール編集
+- 商品出品・編集・削除
+- 商品一覧表示（販売中のみ/売却済み判定）
+- 商品検索機能・カテゴリー絞り込み
+- いいね機能・コメント投稿機能
+- 決済機能（Stripe連携などがあれば記載）
 
 本プロジェクトはDockerコンテナ上で動作します。
 
@@ -26,11 +38,19 @@ DB_USERNAME=laravel_user
 DB_PASSWORD=laravel_pass
 ```
 
-# .envファイル設定後実行
+## .envファイル設定後実行
 
 ```bash
 docker compose exec php php artisan migrate --seed
 ```
+
+## テスト用ログインアカウント
+環境構築後の動作確認用に、以下のユーザーでログイン可能です。
+
+| 項目 | 設定値 |
+| :--- | :--- |
+| **メールアドレス** | `sell@my.com` |
+| **パスワード** | `password` |
 
 ## 実行環境
 
@@ -130,3 +150,4 @@ DB管理: http://localhost:8080
 ### ER図
 
 ![ER図](er-diagram.jpg)
+
