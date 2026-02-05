@@ -44,13 +44,15 @@ DB_PASSWORD=laravel_pass
 docker compose exec php php artisan migrate --seed
 ```
 
-## テスト用ログインアカウント
-環境構築後の動作確認用に、以下のユーザーでログイン可能です。
+## 👤 テスト用ログインアカウント
+環境構築後の動作確認用に、以下のユーザーでログイン可能です
 
 | 項目 | 設定値 |
 | :--- | :--- |
-| **メールアドレス** | `sell@my.com` |
+| **メールアドレス** | `user@example.com` |
 | **パスワード** | `password` |
+
+> ※ 商品を出品した状態を確認したい場合は、出品者用アカウント（`sell@my.com` / `password`）をご利用ください。
 
 ## 実行環境
 

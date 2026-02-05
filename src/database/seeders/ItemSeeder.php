@@ -15,6 +15,11 @@ class ItemSeeder extends Seeder
             'email' => 'sell@my.com',
         ]);
 
+        User::firstOrCreate(
+            ['email' => 'user@example.com'],
+            ['name' => 'テストユーザー', 'password' => bcrypt('password')]
+        );
+
         $items = [
             [
                 'name' => '腕時計',
