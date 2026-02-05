@@ -5,20 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Category;
+use App\Http\Requests\ExhibitionRequest;
 
 class ItemController extends Controller
 {
-    /**
-     * 商品一覧画面（検索 ＆ マイリスト切り替え）
-     */
+
     public function index(Request $request)
     {
-        // 1. クエリビルダを開始
         $query = Item::query();
 
-        // 2. タブ判定：マイリストの場合
         if ($request->query('tab') === 'mylist') {
-            // ログインしていない場合は空の結果を返すか、ログイン画面へリダイレクト
             if (Auth::check()) {
                 /** @var \App\Models\User $user */
                 $user = Auth::user();
@@ -27,30 +24,79 @@ class ItemController extends Controller
                 $items = collect([]);
                 return view('index', compact('items'));
             }
+        } else {
+            if (Auth::check()) {
+                $query->where('user_id', '!=', Auth::id());
+            }
         }
 
-        // 3. 検索キーワードがある場合（マイリスト内検索も可能）
         if ($request->filled('keyword')) {
             $keyword = $request->input('keyword');
             $query->where('name', 'LIKE', "%{$keyword}%");
         }
 
-        // 4. 最終的な結果を取得
         $items = $query->latest()->get();
 
         return view('index', compact('items'));
     }
 
-    /**
-     * 商品詳細画面
-     */
     public function show($id)
     {
-        // withCountでリレーションの数を取得、withで関連データを一括取得（N+1問題対策）
-        $item = Item::with(['brand', 'categories', 'comments.user'])
+        $item = Item::with(['categories', 'comments.user'])
             ->withCount(['favorites', 'comments'])
             ->findOrFail($id);
 
-        return view('item_detail', compact('item'));
+        $Favorite = false;
+
+        if (Auth::check()) {
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+            $Favorite = $user->favoriteItems()->where('item_id', $id)->exists();
+        }
+
+        return view('item_detail', compact('item', 'Favorite'));
+    }
+
+    public function favorite($item_id)
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        $user->favoriteItems()->syncWithoutDetaching([$item_id]);
+
+        return back();
+    }
+
+    public function unfavorite($item_id)
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $user->favoriteItems()->detach($item_id);
+        return back();
+    }
+
+    public function create()
+    {
+        $categories = Category::all();
+        return view('sell', compact('categories'));
+    }
+
+    public function store(ExhibitionRequest $request)
+    {
+        $path = $request->file('item_image')->store('items', 'public');
+
+        $item = Item::create([
+            'user_id'     => Auth::id(),
+            'name'        => $request->name,
+            'description' => $request->description,
+            'price'       => $request->price,
+            'condition'   => $request->condition,
+            'image_url' => $path,
+            'brand' => $request->brand,
+        ]);
+
+        $item->categories()->attach($request->category_ids);
+
+        return redirect('/')->with('message', '商品を出品しました！');
     }
 }

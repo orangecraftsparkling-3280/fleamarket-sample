@@ -23,7 +23,12 @@
             @foreach($items as $item)
             <a href="{{ route('item.show', $item->id) }}" class="item-card">
                 <div class="item-image-wrapper">
-                    <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
+                    <img src="{{ str_starts_with($item->image_url, 'http') ? $item->image_url : asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}">
+                    @if(isset($item->is_sold) && $item->is_sold)
+                    <div class="sold-label">
+                        <span>sold</span>
+                    </div>
+                    @endif
                 </div>
                 <p class="item-name">{{ $item->name }}</p>
             </a>

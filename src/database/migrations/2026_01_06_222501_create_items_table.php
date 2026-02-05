@@ -15,12 +15,12 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->string('name');               // 商品名
-            $table->integer('price');              // 価格
-            $table->string('brand')->nullable();   // ブランド名（空でもOK）
-            $table->text('description');           // 商品説明
-            $table->string('image_url');           // 画像URL
-            $table->string('condition');           // 商品の状態（良好、傷あり等）
+            $table->string('name');
+            $table->integer('price');
+            $table->string('brand')->nullable();
+            $table->text('description');
+            $table->string('image_url');
+            $table->string('condition');
             $table->timestamps();
         });
     }

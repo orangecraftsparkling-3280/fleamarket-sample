@@ -8,15 +8,12 @@
 <main class="container">
     <div class="item-detail-layout">
 
-        {{-- 左側：商品画像セクション --}}
         <div class="item-image-section">
-            <img src="{{ asset($item->image_url) }}" alt="{{ $item->name }}" width="500px" height="500px">
+            <img src="{{ str_starts_with($item->image_url, 'http') ? $item->image_url : asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}">
         </div>
 
-        {{-- 右側：商品情報セクション --}}
         <div class="item-info-section">
 
-            {{-- 商品基本情報 --}}
             <div class="main-info">
                 <h1 class="item-name">{{ $item->name }}</h1>
                 <p class="brand-name">{{ $item->brand}}</p>
@@ -24,14 +21,10 @@
                     <span class="currency">¥</span>{{ number_format($item->price) }} <span class="tax-in">(税込)</span>
                 </p>
 
-                {{-- アクション（いいね・コメント数） --}}
                 <div class="action-icons">
-                    {{-- いいねボタン（Formによる同期通信） --}}
-                    {{-- いいねセクション --}}
                     <div class="icon-group">
                         @auth
-                        @if($isFavorite)
-                        {{-- いいね済み：赤いハートを表示 --}}
+                        @if($Favorite)
                         <form action="{{ route('favorite.destroy', $item->id) }}" method="POST" class="favorite-form">
                             @csrf
                             @method('DELETE')
@@ -40,7 +33,6 @@
                             </button>
                         </form>
                         @else
-                        {{-- 未いいね：デフォルトのハートを表示 --}}
                         <form action="{{ route('favorite.store', $item->id) }}" method="POST" class="favorite-form">
                             @csrf
                             <button type="submit" class="icon-btn">
@@ -49,16 +41,13 @@
                         </form>
                         @endif
                         @else
-                        {{-- 未ログイン時：デフォルト画像でログインへ誘導 --}}
                         <a href="{{ route('login') }}" class="icon-btn">
                             <img src="{{ asset('images/ハートロゴ_デフォルト.png') }}" alt="ログインしていいね">
                         </a>
                         @endauth
 
-                        {{-- いいね数の表示 --}}
                         <span class="count">{{ $item->favorites_count }}</span>
                     </div>
-                    {{-- コメント数表示セクション --}}
                     <div class="icon-group">
                         <a href="#comment-area" class="icon-btn">
                             <img src="{{ asset('images/ふきだしロゴ.png') }}" alt="コメント">
@@ -66,13 +55,17 @@
                         <span class="count">{{ $item->comments_count }}</span>
                     </div>
                 </div>
-                {{-- 購入ボタンなどはここに配置 --}}
+
                 <div class="buy-action">
+                    @if($item->is_sold)
+                    <button class="btn-primary is-sold" disabled>sold out</button>
+                    @else
+                    {{-- 販売中の場合 --}}
                     <a href="{{ route('purchase', ['id' => $item->id]) }}" class="btn-primary">購入手続きへ</a>
+                    @endif
                 </div>
             </div>
 
-            {{-- 商品説明 --}}
             <section class="detail-section">
                 <h2 class="section-title">商品説明</h2>
                 <div class="description-text">
@@ -80,7 +73,6 @@
                 </div>
             </section>
 
-            {{-- 商品情報（カテゴリ・状態） --}}
             <section class="detail-section">
                 <h2 class="section-title">商品情報</h2>
                 <table class="info-table">
@@ -102,7 +94,6 @@
                 </table>
             </section>
 
-            {{-- コメントセクション --}}
             <section class="comment-section" id="comment-area">
                 <h2 class="section-title">コメント ({{ $item->comments_count }})</h2>
 
@@ -111,13 +102,12 @@
                     <div class="comment-card">
                         <div class="comment-user">
                             <div class="user-avatar-small">
-                                {{-- プロフィール画像がある場合は表示、なければ初期アイコン --}}
-                                <img src="{{ $comment->user->profile_image ? asset('storage/' . $comment->user->profile_image) : asset('images/default-user.png') }}" alt="">
+                                <img src="{{ $comment->user->profile->getAvatarUrl() }}" alt="ユーザーアイコン">
                             </div>
                             <span class="user-name">{{ $comment->user->name }}</span>
                         </div>
                         <div class="comment-content">
-                            <p>{{ $comment->content }}</p>
+                            <p>{{ $comment->comment }}</p>
                         </div>
                     </div>
                     @empty
@@ -125,23 +115,19 @@
                     @endforelse
                 </div>
 
-                {{-- コメント投稿フォーム --}}
                 <div class="comment-form-wrapper" id="comment-form">
                     <h3 class="form-title">商品へのコメント</h3>
 
                     <form action="{{ route('comment.store', $item->id) }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <textarea name="content" class="comment-textarea" required>{{ old('content') }}</textarea>
+                            <textarea name="comment" class="comment-textarea">{{ old('comment') }}</textarea>
 
-                            {{-- バリデーションエラー（未ログインや未入力など）の表示 --}}
-                            @if ($errors->any())
-                            <ul class="error-list">
-                                @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                            @endif
+                            <div class="form__error">
+                                @error('comment')
+                                {{ $message }}
+                                @enderror
+                            </div>
                         </div>
 
                         <button type="submit" class="btn-secondary">コメントを送信する</button>

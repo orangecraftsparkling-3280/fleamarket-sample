@@ -4,11 +4,17 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Item;
+use App\Models\User;
 
 class ItemSeeder extends Seeder
 {
     public function run(): void
     {
+        $seller = User::first() ?? User::factory()->create([
+            'name' => 'テスト',
+            'email' => 'sell@my.com',
+        ]);
+
         $items = [
             [
                 'name' => '腕時計',
@@ -103,14 +109,13 @@ class ItemSeeder extends Seeder
         ];
 
         foreach ($items as $itemData) {
-            // category_ids を退避させて削除
             $categoryIds = $itemData['category_ids'] ?? [];
             unset($itemData['category_ids']);
 
-            // Itemの作成
+            $itemData['user_id'] = $seller->id;
+
             $item = Item::create($itemData);
 
-            // リレーションの同期
             if (!empty($categoryIds)) {
                 $item->categories()->attach($categoryIds);
             }

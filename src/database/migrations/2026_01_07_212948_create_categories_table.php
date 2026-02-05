@@ -11,20 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // 1. カテゴリー自体のマスターテーブル
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // カテゴリー名（例：ファッション、家電など）
+            $table->string('name');
             $table->timestamps();
         });
 
-        // 2. 商品(items)とカテゴリー(categories)を結びつける中間テーブル
         Schema::create('category_item', function (Blueprint $table) {
             $table->id();
-            // foreignIdの引数は紐付け先テーブルの単数形_id
             $table->foreignId('item_id')->constrained()->onDelete('cascade');
-
-            // カテゴリー側のID。constrainedの中身を明示することで不整合を防ぎます
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
         });
     }

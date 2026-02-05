@@ -20,29 +20,33 @@ class Item extends Model
         'description',
         'image_url',
         'condition',
+        'user_id',
+        'is_sold',
+        'buyer_id',
     ];
 
     public function favorites()
     {
-        // 中間テーブル 'favorites' を通じて User モデルと紐付け
         return $this->belongsToMany(User::class, 'favorites', 'item_id', 'user_id')->withTimestamps();
     }
 
-    // ブランドとのリレーション（1対多の場合）
-    public function brand()
-    {
-        return $this->belongsTo(Brand::class);
-    }
-
-    // カテゴリーとのリレーション（多対多の場合）
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'category_item');
     }
 
-    // コメントとのリレーション（1対多の場合）
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function seller()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function buyer()
+    {
+        return $this->belongsTo(User::class, 'buyer_id');
     }
 }

@@ -1,34 +1,41 @@
 .site-header {
+    width: 100%;
+    background-color: #000000;
+    border-bottom: 1px solid #333;
+    padding: 10px 0;
+}
+.header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
     display: flex;
-    align-items: center; /* 上下中央揃え */
-    justify-content: space-between; /* 要素を左右・中央に配置 */
-    padding: 10px 20px;
-    background-color: #000000; /* 背景黒 */
-    border-bottom: 1px solid #ddd;
+    align-items: center;
+    justify-content: space-between;
 }
 
-/* 1. ロゴエリア（左側） */
 .header-logo {
-    flex: 1; /* 左右に同じ比率(1)を割り当てる */
+    flex: 0 0 auto;
     display: flex;
+    margin-right: 40px;
     justify-content: flex-start;
 }
 
 .header-logo img {
-    height: 40px; /* 高さを指定すると安定します */
+    height: 40px;
+    width: auto;
     vertical-align: middle;
 }
 
-/* 2. 検索フォームエリア（中央） */
 .header-search-container {
-    flex: 2; /* 中央は少し広めに確保 */
+    flex: 1;
     display: flex;
-    justify-content: center; /* 中身を中央寄せにする */
+    justify-content: center;
+    padding: 0 40px;
 }
 
 .header-search {
     width: 100%;
-    max-width: 600px; /* 広がりすぎ防止 */
+    max-width: 600px;
 }
 
 .header-search input {
@@ -38,26 +45,32 @@
     border-radius: 4px;
 }
 
-/* 3. ナビエリア（右側） */
 .header-nav {
-    flex: 1; /* 左右に同じ比率(1)を割り当てる */
+    flex: 1;
     display: flex;
-    justify-content: flex-end; /* 右寄せ */
+    justify-content: flex-end;
     gap: 20px;
     align-items: center;
 }
 
 .header-nav a {
     text-decoration: none;
-    color: #fff; /* 背景が黒なので白文字 */
+    color: #fff;
     font-size: 14px;
 }
 
-.listing-btn {
+.sell-btn {
+    color:black !important;
+    background-color: #fff;
     border: none;
     font-size: 14px;
     padding: 2px 12px;
     border-radius: 4px;
     cursor: pointer;
-    white-space: nowrap; /* 改行防止 */
+    white-space: nowrap;
+}
+
+.sell-btn:hover {
+    background-color: #eee;
+    opacity: 0.9;
 }

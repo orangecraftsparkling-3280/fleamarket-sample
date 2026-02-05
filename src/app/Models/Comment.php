@@ -12,27 +12,19 @@ class Comment extends Model
     use HasFactory;
 
     /**
-     * 複数代入を許可する属性
-     *
      * @var array<int, string>
      */
     protected $fillable = [
         'user_id',
         'item_id',
-        'comment', // blade側で textarea の name を content にしている場合に合わせます
+        'comment',
     ];
 
-    /**
-     * このコメントを投稿したユーザーを取得（1対多の逆）
-     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * このコメントが投稿された商品を取得（1対多の逆）
-     */
     public function item()
     {
         return $this->belongsTo(Item::class);

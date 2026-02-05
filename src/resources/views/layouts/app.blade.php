@@ -12,23 +12,41 @@
 
 <body>
     <header class="site-header">
-        <div class="header-logo">
-            <a href="{{ url('/') }}">
-                <img src="{{ asset('images/COACHTECHヘッダーロゴ.png') }}" alt="ロゴ" width="300" height="26">
-            </a>
-        </div>
+        <div class="container header-inner">
+            <div class="header-logo">
+                <a href="{{ url('/') }}">
+                    <img src="{{ asset('images/COACHTECHヘッダーロゴ.png') }}" alt="ロゴ" class="logo-img">
+                </a>
+            </div>
+            @if(!Route::is('login') && !Route::is('register'))
+            <div class="header-search">
+                <form action="{{ route('index') }}" method="GET">
+                    <input type="text" name="keyword" placeholder="何をお探しですか？" value="{{ request('keyword') }}">
 
-        <div class="header-search">
-            <form action="{{ url('/search') }}" method="GET">
-                <input type="text" name="keyword" placeholder="何をお探しですか？">
-            </form>
-        </div>
+                    @if(request('tab') === 'mylist')
+                    <input type="hidden" name="tab" value="mylist">
+                    @endif
+                </form>
+            </div>
 
-        <nav class="header-nav">
-            <a href="{{ url('/mypage') }}">マイページ</a>
-            <a href="{{ url('/login') }}">ログイン</a>
-            <button class=listing-btn>出品</button>
-        </nav>
+            <nav class="header-nav">
+                @auth
+
+                <form action="{{ url('/logout') }}" method="post">
+                    @csrf
+                    <button type="submit" class="header-nav__button">ログアウト</button>
+                </form>
+                @endauth
+
+                @guest
+                <a href="{{ url('/login') }}">ログイン</a>
+                @endguest
+
+                <a href="{{ url('/mypage') }}">マイページ</a>
+                <a href="{{ route('item.create') }}" class="sell-btn">出品</a>
+            </nav>
+            @endif
+        </div>
     </header>
     <main>
         @yield('content')
