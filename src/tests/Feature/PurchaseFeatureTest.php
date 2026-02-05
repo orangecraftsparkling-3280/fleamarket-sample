@@ -7,6 +7,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Item;
 use App\Models\Profile;
+use Stripe\Checkout\Session;
 
 class PurchaseFeatureTest extends TestCase
 {
@@ -14,6 +15,13 @@ class PurchaseFeatureTest extends TestCase
 
     public function test_purchase_process_and_address_integration()
     {
+        \Mockery::mock('alias:' . Session::class)
+            ->shouldReceive('create')
+            ->andReturn((object)[
+                'id' => 'test_session_id',
+                'url' => 'http://localhost/mock-stripe-checkout'
+            ]);
+
         /** @var \App\Models\User $user */
         $user = User::factory()->create(['name' => 'テストユーザー', 'email_verified_at' => now()]);
 
