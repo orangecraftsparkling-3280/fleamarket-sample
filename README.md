@@ -64,48 +64,66 @@ DB管理: http://localhost:8080
 <details>
 <summary>テーブル仕様書を表示する</summary>
 
-カラム名,型,制約,説明
-id,bigint,Primary Key,ユーザーの固有ID
-name,string,Not Null,ユーザー名
-email,string,"Not Null, Unique",メールアドレス（ログイン用）
-password,string,Not Null,パスワード（ハッシュ化）
-remember_token,string,Nullable,ログイン保持用トークン
+#### users（ユーザー）
 
-カラム名,型,制約,説明
-id,bigint,Primary Key,プロフィールID
-user_id,bigint,Foreign Key,users.id への外部参照
-img_path,string,Nullable,プロフィール画像へのパス
-post_code,string,Not Null,郵便番号
-address,string,Not Null,住所
-building,string,Nullable,建物名
+| カラム名       | 型     | 制約             | 説明                         |
+| :------------- | :----- | :--------------- | :--------------------------- |
+| id             | bigint | Primary Key      | ユーザーの固有ID             |
+| name           | string | Not Null         | ユーザー名                   |
+| email          | string | Not Null, Unique | メールアドレス（ログイン用） |
+| password       | string | Not Null         | パスワード（ハッシュ化）     |
+| remember_token | string | Nullable         | ログイン保持用トークン       |
 
-カラム名,型,制約,説明
-id,bigint,Primary Key,商品ID
-user_id,bigint,Foreign Key,出品者のユーザーID
-buyer_id,bigint,Foreign Key (Nullable),購入者のユーザーID
-name,string,Not Null,商品名
-price,int,Not Null,販売価格
-brand,string,Nullable,ブランド名
-description,text,Not Null,商品の説明文
-image_url,string,Not Null,商品画像のURL
-condition,string,Not Null,商品の状態（中古、新品など）
-is_sold,boolean,Default: false,販売済みフラグ
+#### profiles（プロフィール）
 
-カラム名,型,制約,説明
-id,bigint,Primary Key,コメントID
-user_id,bigint,Foreign Key,コメント投稿者ID
-item_id,bigint,Foreign Key,対象の商品ID
-comment,text,Not Null,コメント本文
+| カラム名  | 型     | 制約        | 説明                     |
+| :-------- | :----- | :---------- | :----------------------- |
+| id        | bigint | Primary Key | プロフィールID           |
+| user_id   | bigint | Foreign Key | users.id への外部参照    |
+| img_path  | string | Nullable    | プロフィール画像へのパス |
+| post_code | string | Not Null    | 郵便番号                 |
+| address   | string | Not Null    | 住所                     |
+| building  | string | Nullable    | 建物名                   |
 
-カラム名,型,制約,説明
-id,bigint,Primary Key,お気に入りID
-user_id,bigint,Foreign Key,いいねしたユーザーID
-item_id,bigint,Foreign Key,いいねされた商品ID
+#### items（商品）
 
-テーブル名,カラム名,型,説明
-categories,name,string,カテゴリー名（ファッション、家電など）
-category_item,item_id,bigint,itemsテーブルとの紐付け
-category_item,category_id,bigint,categoriesテーブルとの紐付け
+| カラム名    | 型      | 制約                   | 説明               |
+| :---------- | :------ | :--------------------- | :----------------- |
+| id          | bigint  | Primary Key            | 商品ID             |
+| user_id     | bigint  | Foreign Key            | 出品者のユーザーID |
+| buyer_id    | bigint  | Foreign Key (Nullable) | 購入者のユーザーID |
+| name        | string  | Not Null               | 商品名             |
+| price       | int     | Not Null               | 販売価格           |
+| brand       | string  | Nullable               | ブランド名         |
+| description | text    | Not Null               | 商品の説明文       |
+| image_url   | string  | Not Null               | 商品画像のURL      |
+| condition   | string  | Not Null               | 商品の状態         |
+| is_sold     | boolean | Default: false         | 販売済みフラグ     |
+
+#### comments（コメント）
+
+| カラム名 | 型     | 制約        | 説明             |
+| :------- | :----- | :---------- | :--------------- |
+| id       | bigint | Primary Key | コメントID       |
+| user_id  | bigint | Foreign Key | コメント投稿者ID |
+| item_id  | bigint | Foreign Key | 対象の商品ID     |
+| comment  | text   | Not Null    | コメント本文     |
+
+#### favorites（お気に入り）
+
+| カラム名 | 型     | 制約        | 説明                 |
+| :------- | :----- | :---------- | :------------------- |
+| id       | bigint | Primary Key | お気に入りID         |
+| user_id  | bigint | Foreign Key | いいねしたユーザーID |
+| item_id  | bigint | Foreign Key | いいねされた商品ID   |
+
+#### categories & 中間テーブル
+
+| テーブル名    | カラム名    | 型     | 説明                         |
+| :------------ | :---------- | :----- | :--------------------------- |
+| categories    | name        | string | カテゴリー名                 |
+| category_item | item_id     | bigint | itemsテーブルとの紐付け      |
+| category_item | category_id | bigint | categoriesテーブルとの紐付け |
 
 </details>
 
