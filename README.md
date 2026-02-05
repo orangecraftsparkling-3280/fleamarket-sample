@@ -59,6 +59,34 @@ DB管理: http://localhost:8080
 
 メールテスト: http://localhost:8025
 
+### データベース設計
+
+<details>
+<summary>テーブル仕様書を表示する</summary>
+
+users（ユーザー）
+ユーザーの基本情報を管理します。 | カラム名 | 型 | 制約 | 説明 | | :--- | :--- | :--- | :--- | | id | bigint | Primary Key | ユーザーID | | name | string | Not Null | ユーザー名 | | email | string | Not Null, Unique | メールアドレス | | password | string | Not Null | ハッシュ化されたパスワード | | remember_token | string | Nullable | ログイン保持用トークン |
+
+profiles（プロフィール）
+ユーザーの詳細情報を管理します。 | カラム名 | 型 | 制約 | 説明 | | :--- | :--- | :--- | :--- | | id | bigint | Primary Key | ID | | user_id | bigint | Foreign Key | users.id への外部参照 | | img_path | string | Nullable | プロフィール画像パス | | post_code | string | Not Null | 郵便番号 | | address | string | Not Null | 住所 | | building | string | Nullable | 建物名 |
+
+items（商品）
+出品された商品を管理します。 | カラム名 | 型 | 制約 | 説明 | | :--- | :--- | :--- | :--- | | id | bigint | Primary Key | 商品ID | | user_id | bigint | Foreign Key | 出品者（users.id） | | buyer_id | bigint | Foreign Key, Nullable | 購入者（users.id） | | name | string | Not Null | 商品名 | | price | int | Not Null | 価格 | | brand | string | Nullable | ブランド名 | | description | text | Not Null | 商品説明 | | image_url | string | Not Null | 商品画像URL | | condition | string | Not Null | 商品の状態 | | is_sold | boolean | Default: false | 販売状況（売切判定） |
+
+comments（コメント）
+商品に対するユーザーのコメントを管理します。 | カラム名 | 型 | 制約 | 説明 | | :--- | :--- | :--- | :--- | | id | bigint | Primary Key | ID | | user_id | bigint | Foreign Key | 投稿者（users.id） | | item_id | bigint | Foreign Key | 対象商品（items.id） | | comment | text | Not Null | コメント内容 |
+
+favorites（いいね）
+ユーザーのお気に入り登録を管理します。 | カラム名 | 型 | 制約 | 説明 | | :--- | :--- | :--- | :--- | | id | bigint | Primary Key | ID | | user_id | bigint | Foreign Key | ユーザーID | | item_id | bigint | Foreign Key | 商品ID |
+
+categories（カテゴリー）
+商品のカテゴリーを定義します。 | カラム名 | 型 | 制約 | 説明 | | :--- | :--- | :--- | :--- | | id | bigint | Primary Key | カテゴリーID | | name | string | Not Null | カテゴリー名 |
+
+category_item（中間テーブル）
+商品とカテゴリーの多対多のリレーションを管理します。 | カラム名 | 型 | 制約 | 説明 | | :--- | :--- | :--- | :--- | | id | bigint | Primary Key | ID | | item_id | bigint | Foreign Key | 商品ID | | category_id | bigint | Foreign Key | カテゴリーID |
+
+</details>
+
 ### ER図
 
 ![ER図](er-diagram.jpg)
