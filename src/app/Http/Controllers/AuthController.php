@@ -19,9 +19,13 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
+            $user = $request->user();
+
             if ($request->user()->hasVerifiedEmail()) {
                 return redirect()->intended('/');
             }
+
+            $user->sendEmailVerificationNotification();
 
             return redirect()->route('verification.notice');
         }
