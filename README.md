@@ -85,23 +85,56 @@ DB管理: http://localhost:8080
 
 ### データベース設計
 
-erDiagram
-users ||--o| profiles : "1:1"
-users ||--o{ items : "出品"
-users ||--o{ purchases : "購入"
-users ||--o{ favorites : "お気に入り"
-users ||--o{ comments : "コメント投稿"
+No,テーブル名,カラム名,型,PK,UK,NN,FK
+1,users,id,unsigned bigint,○,,○,
+,,name,string,,,○,
+,,email,string,,○,○,
+,,password,string,,,○,
+,,remember_token,varchar(100),,,,
+,,email_verified_at,timestamp,,,,
+,,created_at / updated_at,timestamp,,,,
+2,items,id,unsigned bigint,○,,○,
+,,user_id,unsigned bigint,,,○,users(id)
+,,name,string,,,○,
+,,price,integer,,,○,
+,,brand,string,,,,
+,,description,text,,,○,
+,,image_url,string,,,○,
+,,condition_id,unsigned bigint,,,○,conditions(id)
+,,is_sold,boolean,,,○,
+,,created_at / updated_at,timestamp,,,,
+3,favorites,id,unsigned bigint,○,,○,
+,,user_id,unsigned bigint,,○,○,users(id)
+,,item_id,unsigned bigint,,○,○,items(id)
+,,created_at / updated_at,timestamp,,,,
+4,categories,id,unsigned bigint,○,,○,
+,,name,string,,,○,
+,,created_at / updated_at,timestamp,,,,
+5,category_item,id,unsigned bigint,○,,○,
+,,item_id,unsigned bigint,,,○,items(id)
+,,category_id,unsigned bigint,,,○,categories(id)
+6,comments,id,unsigned bigint,○,,○,
+,,user_id,unsigned bigint,,,○,users(id)
+,,item_id,unsigned bigint,,,○,items(id)
+,,comment,text,,,○,
+,,created_at / updated_at,timestamp,,,,
+7,profiles,id,unsigned bigint,○,,○,
+,,user_id,unsigned bigint,,○,○,users(id)
+,,img_path,string,,,,
+,,post_code,string(8),,,,
+,,address,string,,,,
+,,building,string,,,,
+,,created_at / updated_at,timestamp,,,,
+8,purchases,id,unsigned bigint,○,,○,
+,,user_id,unsigned bigint,,,○,users(id)
+,,item_id,unsigned bigint,,○,○,items(id)
+,,post_code,string(8),,,○,
+,,address,string,,,○,
+,,building,string,,,,
+,,created_at / updated_at,timestamp,,,,
+9,conditions,id,unsigned bigint,○,,○,
+,,condition,string,,,○,
+,,created_at / updated_at,timestamp,,,,
 
-    items ||--o{ category_item : "属する"
-    categories ||--o{ category_item : "含む"
-
-    items ||--o| purchases : "1:1 (販売済)"
-    items ||--o{ favorites : "被お気に入り"
-    items ||--o{ comments : "被コメント"
-
-    conditions ||--o{ items : "状態定義"
-<details><summary>テーブル仕様書を表示する</summary
->users（ユーザー）カラム名型制約説明idbigintPrimary Keyユーザーの固有IDnamestringNot Nullユーザー名emailstringNot Null, UniqueメールアドレスpasswordstringNot Nullパスワードemail_verified_attimestampNullableメール認証日時remember_tokenstringNullableログイン保持用トークンprofiles（プロフィール）カラム名型制約説明idbigintPrimary KeyプロフィールIDuser_idbigintForeign Key, UniqueユーザーID（1:1）img_pathstringNullable画像パスpost_codestring(8)Not Null郵便番号addressstringNot Null住所buildingstringNullable建物名items（商品）カラム名型制約説明idbigintPrimary Key商品IDuser_idbigintForeign Key出品者IDcondition_idbigintForeign Key状態IDnamestringNot Null商品名priceintNot Null販売価格brandstringNullableブランド名descriptiontextNot Null商品説明image_urlstringNot Null商品画像URLis_soldbooleanDefault: false販売済みフラグcategories（カテゴリ）カラム名型制約説明idbigintPrimary KeyカテゴリIDnamestringNot Nullカテゴリ名category_item（中間テーブル）カラム名型制約説明item_idbigintForeign Key商品IDcategory_idbigintForeign KeyカテゴリIDpurchases（購入履歴）カラム名型制約説明idbigintPrimary Key購入IDuser_idbigintForeign Key購入者IDitem_idbigintForeign Key, Unique商品IDpost_codestring(8)Not Null配送先郵便番号addressstringNot Null配送先住所buildingstringNullable配送先建物名favorites（お気に入り）カラム名型制約説明idbigintPrimary Keyお気に入りIDuser_idbigintForeign KeyユーザーIDitem_idbigintForeign Key商品IDcomments（コメント）カラム名型制約説明idbigintPrimary KeyコメントIDuser_idbigintForeign Key投稿者IDitem_idbigintForeign Key商品IDcommenttextNot Null本文conditions（商品の状態）カラム名型制約説明idbigintPrimary Key状態IDconditionstringNot Null状態名称（新品/中古など）</details>
 ### ER図
-
-![alt text](フリマアプリER図-1.jpg)
+![ER図](フリマアプリER図.jpg)
