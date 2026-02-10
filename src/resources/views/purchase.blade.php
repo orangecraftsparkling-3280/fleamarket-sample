@@ -38,10 +38,10 @@
                 <section class="address-selection">
                     <div class="address-header">
                         <h3>配送先</h3>
-                        <a href="{{ route('profile.edit', ['id' => $item->id]) }}">変更する</a>
+                        <a href="{{ route('address.edit', ['item_id' => $item->id]) }}">変更する</a>
                     </div>
-                    <p>〒{{ $user->profile->post_code }}</p>
-                    <p>{{ $user->profile->address }} {{ $user->profile->building }}</p>
+                    <p>〒 {{ $address['post_code'] }}</p>
+                    <p>{{ $address['address'] }} {{ $address['building'] }}</p>
                     <input type="hidden" name="address" value="{{ $user->profile->address }}">
                 </section>
                 <div class="form__error">

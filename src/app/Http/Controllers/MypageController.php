@@ -10,14 +10,13 @@ class MypageController extends Controller
 {
     public function index(Request $request)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         $tab = $request->query('tab', 'sell');
 
         if ($tab === 'buy') {
-            $items = Item::where('buyer_id', $user->id)
-                ->where('is_sold', true)
-                ->get();
+            $items = $user->boughtItems()->get();
         } else {
             $items = Item::where('user_id', $user->id)->get();
         }

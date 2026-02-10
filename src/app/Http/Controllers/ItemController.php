@@ -6,6 +6,7 @@ use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
+use App\Models\Condition;
 use App\Http\Requests\ExhibitionRequest;
 
 class ItemController extends Controller
@@ -78,7 +79,8 @@ class ItemController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('sell', compact('categories'));
+        $conditions = Condition::all();
+        return view('sell', compact('categories','conditions'));
     }
 
     public function store(ExhibitionRequest $request)
@@ -90,7 +92,7 @@ class ItemController extends Controller
             'name'        => $request->name,
             'description' => $request->description,
             'price'       => $request->price,
-            'condition'   => $request->condition,
+            'condition_id' => $request->condition_id,
             'image_url' => $path,
             'brand' => $request->brand,
         ]);

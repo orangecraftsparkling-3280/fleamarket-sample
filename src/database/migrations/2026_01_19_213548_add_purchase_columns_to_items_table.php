@@ -13,7 +13,6 @@ class AddPurchaseColumnsToItemsTable extends Migration
                 $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             }
             $table->boolean('is_sold')->default(false);
-            $table->foreignId('buyer_id')->nullable()->constrained('users')->onDelete('set null');
         });
     }
 
@@ -21,8 +20,7 @@ class AddPurchaseColumnsToItemsTable extends Migration
     {
         Schema::table('items', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
-            $table->dropForeign(['buyer_id']);
-            $table->dropColumn(['is_sold', 'buyer_id', 'user_id']);
+            $table->dropColumn(['is_sold', 'user_id']);
         });
     }
 };

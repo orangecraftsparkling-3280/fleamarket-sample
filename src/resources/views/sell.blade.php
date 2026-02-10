@@ -53,15 +53,17 @@
 
         <div class="form-group">
             <label for="condition" class="form-label">商品の状態</label>
-            <select name="condition" id="condition" class="form-input condition-select">
-                <option value="" hidden selected>選択してください</option>
-                <option value="良好">良好</option>
-                <option value="目立った傷や汚れなし">目立った傷や汚れなし</option>
-                <option value="やや傷や汚れあり">やや傷や汚れあり</option>
-                <option value="状態が悪い">状態が悪い</option>
+            <select name="condition_id" id="condition" class="form-input condition-select">
+                <option value="" disabled {{ old('condition_id') === null ? 'selected' : '' }}>選択してください</option>
+                @foreach($conditions as $condition)
+                <option value="{{ $condition->id }}"
+                    {{ old('condition_id') == $condition->id ? 'selected' : '' }}>
+                    {{ $condition->condition }}
+                </option>
+                @endforeach
             </select>
             <div class="form__error">
-                @error('condition')
+                @error('condition_id')
                 {{ $message }}
                 @enderror
             </div>

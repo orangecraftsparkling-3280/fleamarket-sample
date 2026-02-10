@@ -24,7 +24,17 @@ class ProfileFeatureTest extends TestCase
         ]);
 
         Item::factory()->create(['user_id' => $user->id, 'name' => '出品アイテムA']);
-        Item::factory()->create(['buyer_id' => $user->id, 'name' => '購入アイテムB', 'is_sold' => true]);
+        $boughtItem = Item::factory()->create([
+            'name' => '購入アイテムB',
+            'is_sold' => true
+        ]);
+
+        \App\Models\Purchase::create([
+            'item_id' => $boughtItem->id,
+            'user_id' => $user->id,
+            'post_code' => '123-4567',
+            'address'   => '秋田県秋田市',
+        ]);
 
         $response = $this->actingAs($user)->get('/mypage');
 

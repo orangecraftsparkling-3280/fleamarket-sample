@@ -43,14 +43,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
-        Route::get('/purchase/address/{id}', [PurchaseController::class, 'editAddress'])->name('address.edit');
-        Route::post('/purchase/address/{id}', [PurchaseController::class, 'updateAddress'])->name('address.update');
+        Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'editAddress'])->name('address.edit');
+        Route::post('/purchase/address/{item_id}', [PurchaseController::class, 'updateAddress'])->name('address.update');
 
         Route::get('/sell', [ItemController::class, 'create'])->name('item.create');
         Route::post('/sell', [ItemController::class, 'store'])->name('item.store');
-        Route::get('/purchase/{id}', [PurchaseController::class, 'index'])->name('purchase');
-        Route::post('/purchase/{id}', [PurchaseController::class, 'store'])->name('purchase.store');
-        Route::get('/purchase/success/{id}', [PurchaseController::class, 'success'])->name('purchase.success');
+        Route::get('/purchase/{item_id}', [PurchaseController::class, 'index'])->name('purchase');
+        Route::post('/purchase/{item_id}', [PurchaseController::class, 'store'])->name('purchase.store');
+        Route::get('/purchase/success/{item_id}', [PurchaseController::class, 'success'])->name('purchase.success');
         Route::post('/item/{item_id}/comment', [CommentController::class, 'store'])->name('comment.store');
         Route::post('/favorite/{item_id}', [ItemController::class, 'favorite'])->name('favorite.store');
         Route::delete('/favorite/{item_id}', [ItemController::class, 'unfavorite'])->name('favorite.destroy');

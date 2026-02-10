@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Item;
 use App\Models\User;
+use App\Models\Condition;
 
 class ItemSeeder extends Seeder
 {
@@ -19,6 +20,8 @@ class ItemSeeder extends Seeder
             ['email' => 'user@example.com'],
             ['name' => 'テストユーザー', 'password' => bcrypt('password')]
         );
+
+        $conditionMap = Condition::pluck('id', 'condition');
 
         $items = [
             [
@@ -116,6 +119,10 @@ class ItemSeeder extends Seeder
         foreach ($items as $itemData) {
             $categoryIds = $itemData['category_ids'] ?? [];
             unset($itemData['category_ids']);
+
+            $conditionName = $itemData['condition'];
+            $itemData['condition_id'] = $conditionMap[$conditionName];
+            unset($itemData['condition']);
 
             $itemData['user_id'] = $seller->id;
 

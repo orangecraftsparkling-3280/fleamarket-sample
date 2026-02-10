@@ -27,10 +27,12 @@ margin: 0 auto;
 }
 
 .form__error {
-    min-height: 24px;
-    height: 20px;
-    color: #ff0000;
+    min-height: 20px;
+    margin-bottom: 5px;
+    color: red;
     text-align: left;
+    font-size: 14px;
+    line-height: 1.4;
 }
 
 .form__input--text input {

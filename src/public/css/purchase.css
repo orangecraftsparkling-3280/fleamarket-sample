@@ -137,8 +137,10 @@ section h3 {
 }
 
 .form__error {
-    color: #ff0000;
-    font-size: 13px;
-    margin-top: 5px;
     min-height: 20px;
+    margin-bottom: 5px;
+    color: red;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.4;
 }

@@ -25,7 +25,7 @@
                     <div class="icon-group">
                         @auth
                         @if($Favorite)
-                        <form action="{{ route('favorite.destroy', $item->id) }}" method="POST" class="favorite-form">
+                        <form action="{{ route('favorite.destroy', ['item_id' => $item->id]) }}" method="POST" class="favorite-form">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="icon-btn">
@@ -33,7 +33,7 @@
                             </button>
                         </form>
                         @else
-                        <form action="{{ route('favorite.store', $item->id) }}" method="POST" class="favorite-form">
+                        <form action="{{ route('favorite.store', ['item_id' => $item->id]) }}" method="POST" class="favorite-form">
                             @csrf
                             <button type="submit" class="icon-btn">
                                 <img src="{{ asset('images/ハートロゴ_デフォルト.png') }}" alt="いいねする">
@@ -60,8 +60,7 @@
                     @if($item->is_sold)
                     <button class="btn-primary is-sold" disabled>sold out</button>
                     @else
-                    {{-- 販売中の場合 --}}
-                    <a href="{{ route('purchase', ['id' => $item->id]) }}" class="btn-primary">購入手続きへ</a>
+                    <a href="{{ route('purchase', ['item_id' => $item->id]) }}" class="btn-primary">購入手続きへ</a>
                     @endif
                 </div>
             </div>
@@ -89,7 +88,7 @@
                     </tr>
                     <tr>
                         <th>商品の状態</th>
-                        <td>{{ $item->condition }}</td>
+                        <td>{{ $item->condition->condition ?? '不明' }}</td>
                     </tr>
                 </table>
             </section>
@@ -118,7 +117,7 @@
                 <div class="comment-form-wrapper" id="comment-form">
                     <h3 class="form-title">商品へのコメント</h3>
 
-                    <form action="{{ route('comment.store', $item->id) }}" method="POST">
+                    <form action="{{ route('comment.store', ['item_id' => $item->id]) }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <textarea name="comment" class="comment-textarea">{{ old('comment') }}</textarea>

@@ -21,7 +21,7 @@ class SellFeatureTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create(['email_verified_at' => now()]);
         $category = Category::create(['name' => 'ファッション']);
-
+        \App\Models\Condition::firstOrCreate(['id' => 1], ['condition' => '良好']);
         $file = UploadedFile::fake()->create('test_item.jpg', 100, 'image/jpeg');
 
         $sellData = [
@@ -29,7 +29,7 @@ class SellFeatureTest extends TestCase
             'brand'        => 'テストブランド名',
             'description'  => '商品の説明文です。',
             'price'        => 5000,
-            'condition'    => '良好',
+            'condition_id' => 1,
             'category_ids' => [$category->id],
             'item_image'   => $file,
         ];
@@ -47,7 +47,7 @@ class SellFeatureTest extends TestCase
             'name'        => 'テスト商品名',
             'brand'       => 'テストブランド名',
             'price'       => 5000,
-            'condition'   => '良好',
+            'condition_id'=> 1,
         ]);
 
         $this->assertDatabaseHas('category_item', [

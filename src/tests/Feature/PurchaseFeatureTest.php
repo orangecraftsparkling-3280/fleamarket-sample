@@ -37,7 +37,7 @@ class PurchaseFeatureTest extends TestCase
             'is_sold' => false
         ]);
 
-        $response = $this->actingAs($user)->get(route('purchase', ['id' => $item->id]) . '?payment_method=konbini');
+        $response = $this->actingAs($user)->get(route('purchase', ['item_id' => $item->id]) . '?payment_method=konbini');
         $response->assertStatus(200);
         $response->assertSee('コンビニ払い');
 
@@ -52,21 +52,25 @@ class PurchaseFeatureTest extends TestCase
 
         $user->refresh();
 
-        $purchasePage = $this->actingAs($user)->get(route('purchase', ['id' => $item->id]));
+        $purchasePage = $this->actingAs($user)->get(route('purchase', ['item_id' => $item->id]));
         $purchasePage->assertSee('888-8888');
         $purchasePage->assertSee('秋田県大仙市');
 
-        $this->actingAs($user)->post(route('purchase.store', ['id' => $item->id]), [
+        $this->actingAs($user)->post(route('purchase.store', ['item_id' => $item->id]), [
             'payment_method' => 'card',
             'address' => '秋田県大仙市',
         ])->assertStatus(303);
 
-        $this->actingAs($user)->get(route('purchase.success', ['id' => $item->id]));
+        $this->actingAs($user)->get(route('purchase.success', ['item_id' => $item->id]));
 
         $this->assertDatabaseHas('items', [
             'id' => $item->id,
-            'buyer_id' => $user->id,
             'is_sold' => true,
+        ]);
+
+        $this->assertDatabaseHas('purchases', [
+            'item_id' => $item->id,
+            'user_id' => $user->id,
         ]);
 
         $this->actingAs($user)->get('/mypage?tab=buy')->assertSee('テスト商品');

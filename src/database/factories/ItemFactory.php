@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Models\Condition;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ItemFactory extends Factory
@@ -13,7 +14,7 @@ class ItemFactory extends Factory
             'name' => $this->faker->word() . 'の商品',
             'price' => $this->faker->numberBetween(500, 10000),
             'description' => $this->faker->realText(20),
-            'condition' => '良好',
+            'condition_id' => Condition::firstOrCreate(['id' => 1], ['condition' => '良好'])->id,
             'user_id' => User::factory(),
             'is_sold' => false,
             'image_url' => 'https://example.com/item.png',

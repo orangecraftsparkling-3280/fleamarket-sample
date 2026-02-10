@@ -7,12 +7,13 @@
 ユーザー間で手軽に商品の売買ができる、プラットフォームです。
 
 ## 機能一覧
+
 - ユーザー登録・プロフィール編集
 - 商品出品・編集・削除
 - 商品一覧表示（販売中のみ/売却済み判定）
 - 商品検索機能・カテゴリー絞り込み
 - いいね機能・コメント投稿機能
-- 決済機能（Stripe連携などがあれば記載）
+- 決済機能（Stripe連携）
 
 本プロジェクトはDockerコンテナ上で動作します。
 
@@ -45,12 +46,13 @@ docker compose exec php php artisan migrate --seed
 ```
 
 ## 👤 テスト用ログインアカウント
+
 環境構築後の動作確認用に、以下のユーザーでログイン可能です
 
-| 項目 | 設定値 |
-| :--- | :--- |
+| 項目               | 設定値             |
+| :----------------- | :----------------- |
 | **メールアドレス** | `user@example.com` |
-| **パスワード** | `password` |
+| **パスワード**     | `password`         |
 
 > ※ 商品を出品した状態を確認したい場合は、出品者用アカウント（`sell@my.com` / `password`）をご利用ください。
 
@@ -83,73 +85,75 @@ DB管理: http://localhost:8080
 
 ### データベース設計
 
-<details>
-<summary>テーブル仕様書を表示する</summary>
+Gemini said
+README.mdの「データベース設計」セクションを完成させるためのコードを作成しました。
 
-#### users（ユーザー）
+Markdownで表が表示されない主な原因は、HTMLタグ（<details>）の直後に空行がないことや、全角スペースが混じっていることです。以下のコードはそれらをすべて修正し、GitHub等で綺麗に表示されるように最適化しています。
 
-| カラム名       | 型     | 制約             | 説明                         |
-| :------------- | :----- | :--------------- | :--------------------------- |
-| id             | bigint | Primary Key      | ユーザーの固有ID             |
-| name           | string | Not Null         | ユーザー名                   |
-| email          | string | Not Null, Unique | メールアドレス（ログイン用） |
-| password       | string | Not Null         | パスワード（ハッシュ化）     |
-| remember_token | string | Nullable         | ログイン保持用トークン       |
+そのままコピーして、### データベース設計 の下に貼り付けてください。
 
-#### profiles（プロフィール）
+データベース設計
+<details> <summary>テーブル仕様書を表示する</summary>
 
-| カラム名  | 型     | 制約        | 説明                     |
-| :-------- | :----- | :---------- | :----------------------- |
-| id        | bigint | Primary Key | プロフィールID           |
-| user_id   | bigint | Foreign Key | users.id への外部参照    |
-| img_path  | string | Nullable    | プロフィール画像へのパス |
-| post_code | string | Not Null    | 郵便番号                 |
-| address   | string | Not Null    | 住所                     |
-| building  | string | Nullable    | 建物名                   |
-
-#### items（商品）
-
-| カラム名    | 型      | 制約                   | 説明               |
-| :---------- | :------ | :--------------------- | :----------------- |
-| id          | bigint  | Primary Key            | 商品ID             |
-| user_id     | bigint  | Foreign Key            | 出品者のユーザーID |
-| buyer_id    | bigint  | Foreign Key (Nullable) | 購入者のユーザーID |
-| name        | string  | Not Null               | 商品名             |
-| price       | int     | Not Null               | 販売価格           |
-| brand       | string  | Nullable               | ブランド名         |
-| description | text    | Not Null               | 商品の説明文       |
-| image_url   | string  | Not Null               | 商品画像のURL      |
-| condition   | string  | Not Null               | 商品の状態         |
-| is_sold     | boolean | Default: false         | 販売済みフラグ     |
-
-#### comments（コメント）
-
-| カラム名 | 型     | 制約        | 説明             |
-| :------- | :----- | :---------- | :--------------- |
-| id       | bigint | Primary Key | コメントID       |
-| user_id  | bigint | Foreign Key | コメント投稿者ID |
-| item_id  | bigint | Foreign Key | 対象の商品ID     |
-| comment  | text   | Not Null    | コメント本文     |
-
-#### favorites（お気に入り）
-
-| カラム名 | 型     | 制約        | 説明                 |
-| :------- | :----- | :---------- | :------------------- |
-| id       | bigint | Primary Key | お気に入りID         |
-| user_id  | bigint | Foreign Key | いいねしたユーザーID |
-| item_id  | bigint | Foreign Key | いいねされた商品ID   |
-
-#### categories & 中間テーブル
-
-| テーブル名    | カラム名    | 型     | 説明                         |
-| :------------ | :---------- | :----- | :--------------------------- |
-| categories    | name        | string | カテゴリー名                 |
-| category_item | item_id     | bigint | itemsテーブルとの紐付け      |
-| category_item | category_id | bigint | categoriesテーブルとの紐付け |
-
+users（ユーザー）
+カラム名	型	制約	説明
+id	bigint	Primary Key	ユーザーの固有ID
+name	string	Not Null	ユーザー名
+email	string	Not Null, Unique	メールアドレス（ログイン用）
+email_verified_at	timestamp	Nullable	メール認証日時
+password	string	Not Null	パスワード（ハッシュ化）
+remember_token	string	Nullable	ログイン保持用トークン
+profiles（プロフィール）
+カラム名	型	制約	説明
+id	bigint	Primary Key	プロフィールID
+user_id	bigint	Foreign Key, Unique	users.id への外部参照（1:1）
+img_path	string	Nullable	プロフィール画像へのパス
+post_code	string	Not Null	郵便番号
+address	string	Not Null	住所
+building	string	Nullable	建物名
+items（商品）
+カラム名	型	制約	説明
+id	bigint	Primary Key	商品ID
+user_id	bigint	Foreign Key	出品者のユーザーID
+condition_id	bigint	Foreign Key	conditions.id への外部参照
+name	string	Not Null	商品名
+price	int	Not Null	販売価格
+brand	string	Nullable	ブランド名
+description	text	Not Null	商品の説明文
+image_url	string	Not Null	商品画像のURL
+is_sold	boolean	Default: false	販売済みフラグ
+comments（コメント）
+カラム名	型	制約	説明
+id	bigint	Primary Key	コメントID
+user_id	bigint	Foreign Key	コメント投稿者ID
+item_id	bigint	Foreign Key	対象の商品ID
+comment	text	Not Null	コメント本文
+favorites（お気に入り）
+カラム名	型	制約	説明
+id	bigint	Primary Key	お気に入りID
+user_id	bigint	Foreign Key	いいねしたユーザーID
+item_id	bigint	Foreign Key	いいねされた商品ID
+categories（カテゴリ）
+カラム名	型	制約	説明
+id	bigint	Primary Key	カテゴリID
+name	string	Not Null	カテゴリ名
+category_item（中間テーブル）
+カラム名	型	制約	説明
+item_id	bigint	Foreign Key	itemsテーブルとの紐付け
+category_id	bigint	Foreign Key	categoriesテーブルとの紐付け
+purchases（購入履歴）
+カラム名	型	制約	説明
+id	bigint	Primary Key	購入ID
+user_id	bigint	Foreign Key	購入者のユーザーID
+item_id	bigint	Foreign Key, Unique	購入された商品ID
+post_code	string	Not Null	配送先郵便番号
+address	string	Not Null	配送先住所
+building	string	Nullable	配送先建物名
+conditions（商品の状態）
+カラム名	型	制約	説明
+id	bigint	Primary Key	状態ID
+condition	string	Not Null	商品の状態（新品、中古など）
 </details>
 
 ### ER図
-
-![ER図](er-diagram.jpg)
-
+![alt text](フリマアプリER図-1.jpg)

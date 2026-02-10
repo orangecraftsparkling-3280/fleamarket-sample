@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\Purchase;
 
 class Item extends Model
 {
@@ -19,10 +20,9 @@ class Item extends Model
         'brand',
         'description',
         'image_url',
-        'condition',
         'user_id',
         'is_sold',
-        'buyer_id',
+        'condition_id'
     ];
 
     public function favorites()
@@ -47,6 +47,17 @@ class Item extends Model
 
     public function buyer()
     {
-        return $this->belongsTo(User::class, 'buyer_id');
+        return $this->hasOneThrough(User::class, Purchase::class, 'item_id', 'user_id');
     }
+
+    public function purchase()
+    {
+        return $this->hasOne(Purchase::class);
+    }
+
+    public function condition()
+    {
+        return $this->belongsTo(Condition::class);
+    }
+
 }

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use App\Http\Requests\PurchaseRequest;
@@ -12,17 +12,23 @@ use App\Http\Requests\AddressRequest;
 
 class PurchaseController extends Controller
 {
-    public function index($id)
+    public function index($item_id)
     {
-        $item = Item::findOrFail($id);
+        $item = Item::findOrFail($item_id);
         $user = Auth::user();
 
-        return view('purchase', compact('item', 'user'));
+        $address = session('shipping_address', [
+            'post_code' => $user->profile->post_code ?? '',
+            'address'   => $user->profile->address ?? '',
+            'building'  => $user->profile->building ?? '',
+        ]);
+
+        return view('purchase', compact('item', 'user', 'address'));
     }
 
-    public function store(PurchaseRequest $request, $id)
+    public function store(PurchaseRequest $request, $item_id)
     {
-        $item = Item::findOrFail($id);
+        $item = Item::findOrFail($item_id);
         $method = $request->payment_method;
 
         Stripe::setApiKey(config('services.stripe.secret'));
@@ -42,48 +48,56 @@ class PurchaseController extends Controller
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
-            'success_url' => route('purchase.success', ['id' => $item->id]),
-            'cancel_url' => route('purchase', ['id' => $item->id]),
+            'success_url' => route('purchase.success', ['item_id' => $item->id]),
+            'cancel_url' => route('purchase', ['item_id' => $item->id]),
         ]);
 
         return redirect($session->url, 303);
     }
 
-    public function success($id)
+    public function success($item_id)
     {
-        $item = Item::findOrFail($id);
-
-        if ($item->is_sold) {
-            return redirect()->route('index')->with('error', 'この商品は既に売り切れています。');
-        }
-
-        $item->update([
-            'is_sold' => true,
-            'buyer_id' => Auth::id(),
-        ]);
-        return redirect('/')->with('message', '購入が完了しました！');
-    }
-
-    public function editAddress($id)
-    {
-        return view('address_edit', ['item_id' => $id]);
-    }
-
-    public function updateAddress(AddressRequest $request, $id)
-    {
-        /** @var \App\Models\User $user */
+        $item = Item::findOrFail($item_id);
         $user = Auth::user();
 
-        $user->profile()->updateOrCreate(
-            ['user_id' => $user->id],
-            [
+        if ($item->is_sold) {
+            return redirect()->route('index')->with('error', '売り切れです');
+        }
+
+        app('db')->transaction(function () use ($item, $user) {
+            $tempAddress = session('shipping_address');
+
+            $item->purchase()->create([
+                'user_id'   => $user->id,
+                'post_code' => $tempAddress['post_code'] ?? $user->profile->post_code,
+                'address'   => $tempAddress['address']   ?? $user->profile->address,
+                'building'  => $tempAddress['building']  ?? $user->profile->building,
+            ]);
+
+            $item->update(['is_sold' => true]);
+
+            session()->forget('shipping_address');
+        });
+
+        return redirect('/')->with('message', '購入完了！');
+    }
+
+    public function editAddress($item_id)
+    {
+        return view('address_edit', ['item_id' => $item_id]);
+    }
+
+    public function updateAddress(AddressRequest $request, $item_id)
+    {
+        session([
+            'shipping_address' => [
                 'post_code' => $request->post_code,
                 'address'   => $request->address,
                 'building'  => $request->building,
             ]
-        );
+        ]);
 
-        return redirect()->route('purchase', ['id' => $id])
-            ->with('message', '配送先を更新しました');
+        return redirect()->route('purchase', ['item_id' => $item_id])
+            ->with('message', '配送先を一時的に変更しました');
     }
 }
