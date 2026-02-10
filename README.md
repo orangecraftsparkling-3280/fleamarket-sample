@@ -83,58 +83,132 @@ DB管理: http://localhost:8080
 
 メールテスト: http://localhost:8025
 
-### データベース設計
+## 🛠 データベース設計
 
-No,テーブル名,カラム名,型,PK,UK,NN,FK
-1,users,id,unsigned bigint,○,,○,
-,,name,string,,,○,
-,,email,string,,○,○,
-,,password,string,,,○,
-,,remember_token,varchar(100),,,,
-,,email_verified_at,timestamp,,,,
-,,created_at / updated_at,timestamp,,,,
-2,items,id,unsigned bigint,○,,○,
-,,user_id,unsigned bigint,,,○,users(id)
-,,name,string,,,○,
-,,price,integer,,,○,
-,,brand,string,,,,
-,,description,text,,,○,
-,,image_url,string,,,○,
-,,condition_id,unsigned bigint,,,○,conditions(id)
-,,is_sold,boolean,,,○,
-,,created_at / updated_at,timestamp,,,,
-3,favorites,id,unsigned bigint,○,,○,
-,,user_id,unsigned bigint,,○,○,users(id)
-,,item_id,unsigned bigint,,○,○,items(id)
-,,created_at / updated_at,timestamp,,,,
-4,categories,id,unsigned bigint,○,,○,
-,,name,string,,,○,
-,,created_at / updated_at,timestamp,,,,
-5,category_item,id,unsigned bigint,○,,○,
-,,item_id,unsigned bigint,,,○,items(id)
-,,category_id,unsigned bigint,,,○,categories(id)
-6,comments,id,unsigned bigint,○,,○,
-,,user_id,unsigned bigint,,,○,users(id)
-,,item_id,unsigned bigint,,,○,items(id)
-,,comment,text,,,○,
-,,created_at / updated_at,timestamp,,,,
-7,profiles,id,unsigned bigint,○,,○,
-,,user_id,unsigned bigint,,○,○,users(id)
-,,img_path,string,,,,
-,,post_code,string(8),,,,
-,,address,string,,,,
-,,building,string,,,,
-,,created_at / updated_at,timestamp,,,,
-8,purchases,id,unsigned bigint,○,,○,
-,,user_id,unsigned bigint,,,○,users(id)
-,,item_id,unsigned bigint,,○,○,items(id)
-,,post_code,string(8),,,○,
-,,address,string,,,○,
-,,building,string,,,,
-,,created_at / updated_at,timestamp,,,,
-9,conditions,id,unsigned bigint,○,,○,
-,,condition,string,,,○,
-,,created_at / updated_at,timestamp,,,,
+> 各テーブル名をクリックすると、詳細なカラム構成を確認できます。
+<br>
+
+<details>
+<summary> 📘 <code>users</code></summary>
+<br>
+
+| カラム名 | 型 | PK | UK | NN | 備考 |
+| :--- | :--- | :---: | :---: | :---: | :--- |
+| **id** | unsigned bigint | ○ | | ○ | |
+| **name** | string | | | ○ | |
+| **email** | string | | ○ | ○ | |
+| **password** | string | | | ○ | |
+| **remember_token** | varchar(100) | | | | |
+| **email_verified_at** | timestamp | | | | |
+
+</details>
+
+<details>
+<summary> 📗 <code>items</code></summary>
+<br>
+
+| カラム名 | 型 | PK | UK | NN | FK (参照先) |
+| :--- | :--- | :---: | :---: | :---: | :--- |
+| **id** | unsigned bigint | ○ | | ○ | |
+| **user_id** | unsigned bigint | | | ○ | `users(id)` |
+| **name** | string | | | ○ | |
+| **price** | integer | | | ○ | |
+| **brand** | string | | | | |
+| **description** | text | | | ○ | |
+| **image_url** | string | | | ○ | |
+| **condition_id** | unsigned bigint | | | ○ | `conditions(id)` |
+| **is_sold** | boolean | | | ○ | |
+
+</details>
+
+<details>
+<summary> 📕 <code>purchases</code></summary>
+<br>
+
+| カラム名 | 型 | PK | UK | NN | FK (参照先) |
+| :--- | :--- | :---: | :---: | :---: | :--- |
+| **id** | unsigned bigint | ○ | | ○ | |
+| **user_id** | unsigned bigint | | | ○ | `users(id)` |
+| **item_id** | unsigned bigint | | ○ | ○ | `items(id)` |
+| **post_code** | string(8) | | | ○ | |
+| **address** | string | | | ○ | |
+| **building** | string | | | | |
+
+</details>
+
+<details>
+<summary> 📙 <code>profiles</code></summary>
+<br>
+
+| カラム名 | 型 | PK | UK | NN | FK (参照先) |
+| :--- | :--- | :---: | :---: | :---: | :--- |
+| **id** | unsigned bigint | ○ | | ○ | |
+| **user_id** | unsigned bigint | | ○ | ○ | `users(id)` |
+| **img_path** | string | | | | |
+| **post_code** | string(8) | | | | |
+| **address** | string | | | | |
+| **building** | string | | | | |
+
+</details>
+
+<details>
+<summary> 📒 <code>favorites</code></summary>
+<br>
+
+| カラム名 | 型 | PK | UK | NN | FK (参照先) |
+| :--- | :--- | :---: | :---: | :---: | :--- |
+| **id** | unsigned bigint | ○ | | ○ | |
+| **user_id** | unsigned bigint | | ○ | ○ | `users(id)` |
+| **item_id** | unsigned bigint | | ○ | ○ | `items(id)` |
+
+</details>
+
+<details>
+<summary> 📔 <code>categories</code></summary>
+<br>
+
+| カラム名 | 型 | PK | UK | NN | 備考 |
+| :--- | :--- | :---: | :---: | :---: | :--- |
+| **id** | unsigned bigint | ○ | | ○ | |
+| **name** | string | | | ○ | |
+
+</details>
+
+<details>
+<summary> 📑 <code>category_item</code></summary>
+<br>
+
+| カラム名 | 型 | PK | UK | NN | FK (参照先) |
+| :--- | :--- | :---: | :---: | :---: | :--- |
+| **id** | unsigned bigint | ○ | | ○ | |
+| **item_id** | unsigned bigint | | | ○ | `items(id)` |
+| **category_id** | unsigned bigint | | | ○ | `categories(id)` |
+
+</details>
+
+<details>
+<summary> 💬 <code>comments</code></summary>
+<br>
+
+| カラム名 | 型 | PK | UK | NN | FK (参照先) |
+| :--- | :--- | :---: | :---: | :---: | :--- |
+| **id** | unsigned bigint | ○ | | ○ | |
+| **user_id** | unsigned bigint | | | ○ | `users(id)` |
+| **item_id** | unsigned bigint | | | ○ | `items(id)` |
+| **comment** | text | | | ○ | |
+
+</details>
+
+<details>
+<summary> ⚙️ <code>conditions</code></summary>
+<br>
+
+| カラム名 | 型 | PK | UK | NN | 備考 |
+| :--- | :--- | :---: | :---: | :---: | :--- |
+| **id** | unsigned bigint | ○ | | ○ | |
+| **condition** | string | | | ○ | |
+
+</details>
 
 ### ER図
 ![ER図](フリマアプリER図.jpg)
