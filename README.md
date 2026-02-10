@@ -85,75 +85,23 @@ DB管理: http://localhost:8080
 
 ### データベース設計
 
-Gemini said
-README.mdの「データベース設計」セクションを完成させるためのコードを作成しました。
+erDiagram
+users ||--o| profiles : "1:1"
+users ||--o{ items : "出品"
+users ||--o{ purchases : "購入"
+users ||--o{ favorites : "お気に入り"
+users ||--o{ comments : "コメント投稿"
 
-Markdownで表が表示されない主な原因は、HTMLタグ（<details>）の直後に空行がないことや、全角スペースが混じっていることです。以下のコードはそれらをすべて修正し、GitHub等で綺麗に表示されるように最適化しています。
+    items ||--o{ category_item : "属する"
+    categories ||--o{ category_item : "含む"
 
-そのままコピーして、### データベース設計 の下に貼り付けてください。
+    items ||--o| purchases : "1:1 (販売済)"
+    items ||--o{ favorites : "被お気に入り"
+    items ||--o{ comments : "被コメント"
 
-データベース設計
-<details> <summary>テーブル仕様書を表示する</summary>
-
-users（ユーザー）
-カラム名	型	制約	説明
-id	bigint	Primary Key	ユーザーの固有ID
-name	string	Not Null	ユーザー名
-email	string	Not Null, Unique	メールアドレス（ログイン用）
-email_verified_at	timestamp	Nullable	メール認証日時
-password	string	Not Null	パスワード（ハッシュ化）
-remember_token	string	Nullable	ログイン保持用トークン
-profiles（プロフィール）
-カラム名	型	制約	説明
-id	bigint	Primary Key	プロフィールID
-user_id	bigint	Foreign Key, Unique	users.id への外部参照（1:1）
-img_path	string	Nullable	プロフィール画像へのパス
-post_code	string	Not Null	郵便番号
-address	string	Not Null	住所
-building	string	Nullable	建物名
-items（商品）
-カラム名	型	制約	説明
-id	bigint	Primary Key	商品ID
-user_id	bigint	Foreign Key	出品者のユーザーID
-condition_id	bigint	Foreign Key	conditions.id への外部参照
-name	string	Not Null	商品名
-price	int	Not Null	販売価格
-brand	string	Nullable	ブランド名
-description	text	Not Null	商品の説明文
-image_url	string	Not Null	商品画像のURL
-is_sold	boolean	Default: false	販売済みフラグ
-comments（コメント）
-カラム名	型	制約	説明
-id	bigint	Primary Key	コメントID
-user_id	bigint	Foreign Key	コメント投稿者ID
-item_id	bigint	Foreign Key	対象の商品ID
-comment	text	Not Null	コメント本文
-favorites（お気に入り）
-カラム名	型	制約	説明
-id	bigint	Primary Key	お気に入りID
-user_id	bigint	Foreign Key	いいねしたユーザーID
-item_id	bigint	Foreign Key	いいねされた商品ID
-categories（カテゴリ）
-カラム名	型	制約	説明
-id	bigint	Primary Key	カテゴリID
-name	string	Not Null	カテゴリ名
-category_item（中間テーブル）
-カラム名	型	制約	説明
-item_id	bigint	Foreign Key	itemsテーブルとの紐付け
-category_id	bigint	Foreign Key	categoriesテーブルとの紐付け
-purchases（購入履歴）
-カラム名	型	制約	説明
-id	bigint	Primary Key	購入ID
-user_id	bigint	Foreign Key	購入者のユーザーID
-item_id	bigint	Foreign Key, Unique	購入された商品ID
-post_code	string	Not Null	配送先郵便番号
-address	string	Not Null	配送先住所
-building	string	Nullable	配送先建物名
-conditions（商品の状態）
-カラム名	型	制約	説明
-id	bigint	Primary Key	状態ID
-condition	string	Not Null	商品の状態（新品、中古など）
-</details>
-
+    conditions ||--o{ items : "状態定義"
+<details><summary>テーブル仕様書を表示する</summary
+>users（ユーザー）カラム名型制約説明idbigintPrimary Keyユーザーの固有IDnamestringNot Nullユーザー名emailstringNot Null, UniqueメールアドレスpasswordstringNot Nullパスワードemail_verified_attimestampNullableメール認証日時remember_tokenstringNullableログイン保持用トークンprofiles（プロフィール）カラム名型制約説明idbigintPrimary KeyプロフィールIDuser_idbigintForeign Key, UniqueユーザーID（1:1）img_pathstringNullable画像パスpost_codestring(8)Not Null郵便番号addressstringNot Null住所buildingstringNullable建物名items（商品）カラム名型制約説明idbigintPrimary Key商品IDuser_idbigintForeign Key出品者IDcondition_idbigintForeign Key状態IDnamestringNot Null商品名priceintNot Null販売価格brandstringNullableブランド名descriptiontextNot Null商品説明image_urlstringNot Null商品画像URLis_soldbooleanDefault: false販売済みフラグcategories（カテゴリ）カラム名型制約説明idbigintPrimary KeyカテゴリIDnamestringNot Nullカテゴリ名category_item（中間テーブル）カラム名型制約説明item_idbigintForeign Key商品IDcategory_idbigintForeign KeyカテゴリIDpurchases（購入履歴）カラム名型制約説明idbigintPrimary Key購入IDuser_idbigintForeign Key購入者IDitem_idbigintForeign Key, Unique商品IDpost_codestring(8)Not Null配送先郵便番号addressstringNot Null配送先住所buildingstringNullable配送先建物名favorites（お気に入り）カラム名型制約説明idbigintPrimary Keyお気に入りIDuser_idbigintForeign KeyユーザーIDitem_idbigintForeign Key商品IDcomments（コメント）カラム名型制約説明idbigintPrimary KeyコメントIDuser_idbigintForeign Key投稿者IDitem_idbigintForeign Key商品IDcommenttextNot Null本文conditions（商品の状態）カラム名型制約説明idbigintPrimary Key状態IDconditionstringNot Null状態名称（新品/中古など）</details>
 ### ER図
+
 ![alt text](フリマアプリER図-1.jpg)
