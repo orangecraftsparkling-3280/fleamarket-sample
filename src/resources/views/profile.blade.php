@@ -93,3 +93,29 @@
     </form>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.getElementById('image').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const previewContainer = document.querySelector('.image-preview-container');
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                let img = previewContainer.querySelector('img');
+
+                if (!img) {
+                    previewContainer.innerHTML = '';
+                    img = document.createElement('img');
+                    img.classList.add('profile-circle');
+                    previewContainer.appendChild(img);
+                }
+                img.src = event.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+@endpush

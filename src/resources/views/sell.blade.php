@@ -17,6 +17,8 @@
             </div>
 
             <div class="image-upload-area">
+                <div id="image-preview" class="image-preview-container">
+                </div>
                 <label for="item_image" class="btn-select-image">画像を選択する</label>
                 <input type="file" name="item_image" id="item_image" accept="image/*" class="hidden-file-input">
             </div>
@@ -117,4 +119,34 @@
         </div>
     </form>
 </main>
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.getElementById('item_image');
+        const previewContainer = document.getElementById('image-preview');
+
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+
+            const tempInput = document.querySelector('input[name="item_image_temp"]');
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    previewContainer.innerHTML = '';
+                    const img = document.createElement('img');
+                    img.src = event.target.result;
+                    previewContainer.appendChild(img);
+
+                    if (tempInput) {
+                        tempInput.value = '';
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+</script>
+@endpush
+
 @endsection

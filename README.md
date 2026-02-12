@@ -9,6 +9,7 @@
 ## 機能一覧
 
 - ユーザー登録・プロフィール編集
+- メール認証機能
 - 商品出品・編集・削除
 - 商品一覧表示（販売中のみ/売却済み判定）
 - 商品検索機能・カテゴリー絞り込み
@@ -86,20 +87,20 @@ DB管理: http://localhost:8080
 ## 🛠 データベース設計
 
 > 各テーブル名をクリックすると、詳細なカラム構成を確認できます。
-<br>
+> <br>
 
 <details>
 <summary> 📘 <code>users</code></summary>
 <br>
 
-| カラム名 | 型 | PK | UK | NN | 備考 |
-| :--- | :--- | :---: | :---: | :---: | :--- |
-| **id** | unsigned bigint | ○ | | ○ | |
-| **name** | string | | | ○ | |
-| **email** | string | | ○ | ○ | |
-| **password** | string | | | ○ | |
-| **remember_token** | varchar(100) | | | | |
-| **email_verified_at** | timestamp | | | | |
+| カラム名              | 型              | PK  | UK  | NN  | 備考 |
+| :-------------------- | :-------------- | :-: | :-: | :-: | :--- |
+| **id**                | unsigned bigint |  ○  |     |  ○  |      |
+| **name**              | string          |     |     |  ○  |      |
+| **email**             | string          |     |  ○  |  ○  |      |
+| **password**          | string          |     |     |  ○  |      |
+| **remember_token**    | varchar(100)    |     |     |     |      |
+| **email_verified_at** | timestamp       |     |     |     |      |
 
 </details>
 
@@ -107,17 +108,17 @@ DB管理: http://localhost:8080
 <summary> 📗 <code>items</code></summary>
 <br>
 
-| カラム名 | 型 | PK | UK | NN | FK (参照先) |
-| :--- | :--- | :---: | :---: | :---: | :--- |
-| **id** | unsigned bigint | ○ | | ○ | |
-| **user_id** | unsigned bigint | | | ○ | `users(id)` |
-| **name** | string | | | ○ | |
-| **price** | integer | | | ○ | |
-| **brand** | string | | | | |
-| **description** | text | | | ○ | |
-| **image_url** | string | | | ○ | |
-| **condition_id** | unsigned bigint | | | ○ | `conditions(id)` |
-| **is_sold** | boolean | | | ○ | |
+| カラム名         | 型              | PK  | UK  | NN  | FK (参照先)      |
+| :--------------- | :-------------- | :-: | :-: | :-: | :--------------- |
+| **id**           | unsigned bigint |  ○  |     |  ○  |                  |
+| **user_id**      | unsigned bigint |     |     |  ○  | `users(id)`      |
+| **name**         | string          |     |     |  ○  |                  |
+| **price**        | integer         |     |     |  ○  |                  |
+| **brand**        | string          |     |     |     |                  |
+| **description**  | text            |     |     |  ○  |                  |
+| **image_url**    | string          |     |     |  ○  |                  |
+| **condition_id** | unsigned bigint |     |     |  ○  | `conditions(id)` |
+| **is_sold**      | boolean         |     |     |  ○  |                  |
 
 </details>
 
@@ -125,14 +126,14 @@ DB管理: http://localhost:8080
 <summary> 📕 <code>purchases</code></summary>
 <br>
 
-| カラム名 | 型 | PK | UK | NN | FK (参照先) |
-| :--- | :--- | :---: | :---: | :---: | :--- |
-| **id** | unsigned bigint | ○ | | ○ | |
-| **user_id** | unsigned bigint | | | ○ | `users(id)` |
-| **item_id** | unsigned bigint | | ○ | ○ | `items(id)` |
-| **post_code** | string(8) | | | ○ | |
-| **address** | string | | | ○ | |
-| **building** | string | | | | |
+| カラム名      | 型              | PK  | UK  | NN  | FK (参照先) |
+| :------------ | :-------------- | :-: | :-: | :-: | :---------- |
+| **id**        | unsigned bigint |  ○  |     |  ○  |             |
+| **user_id**   | unsigned bigint |     |     |  ○  | `users(id)` |
+| **item_id**   | unsigned bigint |     |  ○  |  ○  | `items(id)` |
+| **post_code** | string(8)       |     |     |  ○  |             |
+| **address**   | string          |     |     |  ○  |             |
+| **building**  | string          |     |     |     |             |
 
 </details>
 
@@ -140,14 +141,14 @@ DB管理: http://localhost:8080
 <summary> 📙 <code>profiles</code></summary>
 <br>
 
-| カラム名 | 型 | PK | UK | NN | FK (参照先) |
-| :--- | :--- | :---: | :---: | :---: | :--- |
-| **id** | unsigned bigint | ○ | | ○ | |
-| **user_id** | unsigned bigint | | ○ | ○ | `users(id)` |
-| **img_path** | string | | | | |
-| **post_code** | string(8) | | | | |
-| **address** | string | | | | |
-| **building** | string | | | | |
+| カラム名      | 型              | PK  | UK  | NN  | FK (参照先) |
+| :------------ | :-------------- | :-: | :-: | :-: | :---------- |
+| **id**        | unsigned bigint |  ○  |     |  ○  |             |
+| **user_id**   | unsigned bigint |     |  ○  |  ○  | `users(id)` |
+| **img_path**  | string          |     |     |     |             |
+| **post_code** | string(8)       |     |     |     |             |
+| **address**   | string          |     |     |     |             |
+| **building**  | string          |     |     |     |             |
 
 </details>
 
@@ -155,11 +156,11 @@ DB管理: http://localhost:8080
 <summary> 📒 <code>favorites</code></summary>
 <br>
 
-| カラム名 | 型 | PK | UK | NN | FK (参照先) |
-| :--- | :--- | :---: | :---: | :---: | :--- |
-| **id** | unsigned bigint | ○ | | ○ | |
-| **user_id** | unsigned bigint | | ○ | ○ | `users(id)` |
-| **item_id** | unsigned bigint | | ○ | ○ | `items(id)` |
+| カラム名    | 型              | PK  | UK  | NN  | FK (参照先) |
+| :---------- | :-------------- | :-: | :-: | :-: | :---------- |
+| **id**      | unsigned bigint |  ○  |     |  ○  |             |
+| **user_id** | unsigned bigint |     |  ○  |  ○  | `users(id)` |
+| **item_id** | unsigned bigint |     |  ○  |  ○  | `items(id)` |
 
 </details>
 
@@ -167,10 +168,10 @@ DB管理: http://localhost:8080
 <summary> 📔 <code>categories</code></summary>
 <br>
 
-| カラム名 | 型 | PK | UK | NN | 備考 |
-| :--- | :--- | :---: | :---: | :---: | :--- |
-| **id** | unsigned bigint | ○ | | ○ | |
-| **name** | string | | | ○ | |
+| カラム名 | 型              | PK  | UK  | NN  | 備考 |
+| :------- | :-------------- | :-: | :-: | :-: | :--- |
+| **id**   | unsigned bigint |  ○  |     |  ○  |      |
+| **name** | string          |     |     |  ○  |      |
 
 </details>
 
@@ -178,11 +179,11 @@ DB管理: http://localhost:8080
 <summary> 📑 <code>category_item</code></summary>
 <br>
 
-| カラム名 | 型 | PK | UK | NN | FK (参照先) |
-| :--- | :--- | :---: | :---: | :---: | :--- |
-| **id** | unsigned bigint | ○ | | ○ | |
-| **item_id** | unsigned bigint | | | ○ | `items(id)` |
-| **category_id** | unsigned bigint | | | ○ | `categories(id)` |
+| カラム名        | 型              | PK  | UK  | NN  | FK (参照先)      |
+| :-------------- | :-------------- | :-: | :-: | :-: | :--------------- |
+| **id**          | unsigned bigint |  ○  |     |  ○  |                  |
+| **item_id**     | unsigned bigint |     |     |  ○  | `items(id)`      |
+| **category_id** | unsigned bigint |     |     |  ○  | `categories(id)` |
 
 </details>
 
@@ -190,12 +191,12 @@ DB管理: http://localhost:8080
 <summary> 💬 <code>comments</code></summary>
 <br>
 
-| カラム名 | 型 | PK | UK | NN | FK (参照先) |
-| :--- | :--- | :---: | :---: | :---: | :--- |
-| **id** | unsigned bigint | ○ | | ○ | |
-| **user_id** | unsigned bigint | | | ○ | `users(id)` |
-| **item_id** | unsigned bigint | | | ○ | `items(id)` |
-| **comment** | text | | | ○ | |
+| カラム名    | 型              | PK  | UK  | NN  | FK (参照先) |
+| :---------- | :-------------- | :-: | :-: | :-: | :---------- |
+| **id**      | unsigned bigint |  ○  |     |  ○  |             |
+| **user_id** | unsigned bigint |     |     |  ○  | `users(id)` |
+| **item_id** | unsigned bigint |     |     |  ○  | `items(id)` |
+| **comment** | text            |     |     |  ○  |             |
 
 </details>
 
@@ -203,12 +204,13 @@ DB管理: http://localhost:8080
 <summary> ⚙️ <code>conditions</code></summary>
 <br>
 
-| カラム名 | 型 | PK | UK | NN | 備考 |
-| :--- | :--- | :---: | :---: | :---: | :--- |
-| **id** | unsigned bigint | ○ | | ○ | |
-| **condition** | string | | | ○ | |
+| カラム名      | 型              | PK  | UK  | NN  | 備考 |
+| :------------ | :-------------- | :-: | :-: | :-: | :--- |
+| **id**        | unsigned bigint |  ○  |     |  ○  |      |
+| **condition** | string          |     |     |  ○  |      |
 
 </details>
 
 ### ER図
+
 ![ER図](フリマアプリER図.jpg)

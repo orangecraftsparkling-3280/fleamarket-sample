@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Category;
 use App\Models\Condition;
 use App\Http\Requests\ExhibitionRequest;
@@ -85,16 +86,20 @@ class ItemController extends Controller
 
     public function store(ExhibitionRequest $request)
     {
-        $path = $request->file('item_image')->store('items', 'public');
+        $path = null;
+
+        if ($request->hasFile('item_image')) {
+            $path = $request->file('item_image')->store('items', 'public');
+        }
 
         $item = Item::create([
-            'user_id'     => Auth::id(),
-            'name'        => $request->name,
-            'description' => $request->description,
-            'price'       => $request->price,
+            'user_id'      => Auth::id(),
+            'name'         => $request->name,
+            'description'  => $request->description,
+            'price'        => $request->price,
             'condition_id' => $request->condition_id,
-            'image_url' => $path,
-            'brand' => $request->brand,
+            'image_url'    => $path,
+            'brand'        => $request->brand,
         ]);
 
         $item->categories()->attach($request->category_ids);

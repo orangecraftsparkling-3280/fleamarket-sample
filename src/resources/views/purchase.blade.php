@@ -60,7 +60,7 @@
                         </tr>
                         <tr>
                             <th>支払い方法</th>
-                            <td>(上記で選択してください)</td>
+                            <td id="display_payment_method">(上記で選択してください)</td>
                         </tr>
                     </table>
 
@@ -70,4 +70,30 @@
         </div>
     </form>
 </main>
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const paymentSelect = document.getElementById('payment_method');
+        const displayElement = document.getElementById('display_payment_method');
+
+        const paymentNames = {
+            'konbini': 'コンビニ払い',
+            'card': 'カード支払い'
+        };
+
+        function updateDisplay() {
+            const selectedValue = paymentSelect.value;
+            if (paymentNames[selectedValue]) {
+                displayElement.textContent = paymentNames[selectedValue];
+            } else {
+                displayElement.textContent = '(上記で選択してください)';
+            }
+        }
+
+        paymentSelect.addEventListener('change', updateDisplay);
+
+        updateDisplay();
+    });
+</script>
+@endpush
 @endsection
