@@ -23,6 +23,8 @@ Route::post('/register', [RegisteredController::class, 'store'])->name('register
 
 Route::middleware('auth')->group(function () {
 
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
     Route::get('/email/verify', function () {
         return view('auth.verify_email');
     })->name('verification.notice');
