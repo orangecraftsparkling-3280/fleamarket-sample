@@ -82,7 +82,7 @@
         </div>
 
         <div class="form-group">
-            <label for="name" class="form-label">ブランド名</label>
+            <label for="brand" class="form-label">ブランド名</label>
             <input type="text" name="brand" id="brand" value="{{ old('brand') }}" class="form-input">
             <div class="form__error">
                 @error('brand')
@@ -128,19 +128,15 @@
         fileInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
 
-            const tempInput = document.querySelector('input[name="item_image_temp"]');
-
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     previewContainer.innerHTML = '';
                     const img = document.createElement('img');
                     img.src = event.target.result;
+                    img.style.width = '100%';
+                    img.style.height = 'auto';
                     previewContainer.appendChild(img);
-
-                    if (tempInput) {
-                        tempInput.value = '';
-                    }
                 }
                 reader.readAsDataURL(file);
             }
