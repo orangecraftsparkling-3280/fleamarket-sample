@@ -16,7 +16,7 @@
     </div>
     @enderror
 
-    <form class="form" action="/login" method="post">
+    <form class="form" action="{{ route('login') }}" method="post">
         @csrf
         <div class="form__group">
             <div class="form__group-title">

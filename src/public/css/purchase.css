@@ -1,5 +1,5 @@
 .purchase-container {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 40px auto;
     padding: 0 20px;
     box-sizing: border-box;
@@ -13,7 +13,7 @@
 }
 
 .purchase-main {
-    flex: 2;
+    flex: 1.5;
     min-width: 300px;
 }
 
@@ -88,29 +88,33 @@ section h3 {
 }
 
 .summary-card {
-    border: none;
-    padding: 0;
-    background: none;
+    border: 1px solid #000;
+    padding: 30px 20px;
+    background-color: #fff;
+    margin-bottom: 30px;
 }
 
 .summary-table {
     width: 100%;
-    margin-bottom: 40px;
     border-collapse: collapse;
-    border: 1px solid #ddd;
-    border-style: hidden;
-    box-shadow: 0 0 0 1px #ddd;
+    table-layout: fixed;
 }
 
 .summary-table th,
 .summary-table td {
-    padding: 30px 15px;
-    border-bottom: 1px solid #ddd;
-    white-space: nowrap;
+    border: none;
+    white-space: normal;
+    vertical-align: middle;
 }
 
 .summary-table tr:last-child {
     border-bottom: none;
+}
+
+.summary-table tr:first-child th,
+.summary-table tr:first-child td {
+    padding-bottom: 40px;
+    border-bottom: 2px solid #000;
 }
 
 .summary-table td {

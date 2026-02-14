@@ -63,9 +63,8 @@
                             <td id="display_payment_method">(上記で選択してください)</td>
                         </tr>
                     </table>
-
-                    <button type="submit" class="btn-primary-wide">購入する</button>
                 </div>
+                <button type="submit" class="btn-primary-wide">購入する</button>
             </div>
         </div>
     </form>

@@ -16,7 +16,8 @@ Route::get('/', [ItemController::class, 'index'])->name('index');
 Route::get('/item/{id}', [ItemController::class, 'show'])->name('item.show');
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/register', [RegisteredController::class, 'create'])->name('register');
 Route::post('/register', [RegisteredController::class, 'store'])->name('register.store');
 
 
@@ -41,7 +42,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/mypage', [MypageController::class, 'index'])->name('mypage');
 
         Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+        Route::post('/mypage/profile', [ProfileController::class, 'update'])->name('profile.update');
 
         Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'editAddress'])->name('address.edit');
         Route::post('/purchase/address/{item_id}', [PurchaseController::class, 'updateAddress'])->name('address.update');
