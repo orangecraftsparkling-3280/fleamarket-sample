@@ -5,10 +5,11 @@
 ![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
 
 ユーザー間で手軽に商品の売買ができる、プラットフォームです。
-### スクリーンショット
 
-| 商品一覧画面 | 商品詳細画面 |
-| :---: | :---: |
+## スクリーンショット
+
+|                商品一覧画面                |                商品詳細画面                |
+| :----------------------------------------: | :----------------------------------------: |
 | ![商品一覧](docs/images/フリマアプリ1.png) | ![商品詳細](docs/images/フリマアプリ2.png) |
 
 ## 機能一覧
@@ -16,7 +17,7 @@
 - ユーザー登録・プロフィール編集
 - メール認証機能
 - 商品出品・編集・削除
-- 商品一覧表示（販売中のみ/売却済み判定）
+- 商品一覧表示（売却済み判定）
 - 商品検索機能・カテゴリー絞り込み
 - いいね機能・コメント投稿機能
 - 決済機能（Stripe連携）
@@ -201,6 +202,16 @@ DB管理: http://localhost:8080
 
 </details>
 
-### ER図
+## ER図
 
-![ER図](フリマアプリER図.jpg)
+<details>
+<summary>ER図を表示する</summary>
+
+![ER図](docs/images/フリマアプリER図.jpg)
+
+</details>
+
+## 作成者
+
+- 作成者: [kazuyuki asari]
+- GitHub: [https://github.com/orangecraftsparkling-3280](https://github.com/orangecraftsparkling-3280)
