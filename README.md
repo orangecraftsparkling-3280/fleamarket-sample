@@ -5,6 +5,11 @@
 ![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
 
 ユーザー間で手軽に商品の売買ができる、プラットフォームです。
+### スクリーンショット
+
+| 商品一覧画面 | 商品詳細画面 |
+| :---: | :---: |
+| ![商品一覧](docs/images/フリマアプリ1.png) | ![商品詳細](docs/images/フリマアプリ2.png) |
 
 ## 機能一覧
 
@@ -22,27 +27,12 @@
 
 ```bash
 git clone https://github.com/orangecraftsparkling-3280/fleamarket-sample.git
-cd confirmation-test
+cd fleamarket-sample
 docker compose up -d --build
 cp src/.env.example src/.env
 docker compose exec php composer install
 docker compose exec php php artisan key:generate
-```
-
-## .envファイル設定
-
-```bash
-DB_CONNECTION=mysql
-DB_HOST=mysql
-DB_PORT=3306
-DB_DATABASE=laravel_db
-DB_USERNAME=laravel_user
-DB_PASSWORD=laravel_pass
-```
-
-## .envファイル設定後実行
-
-```bash
+docker compose exec php php artisan storage:link
 docker compose exec php php artisan migrate --seed
 ```
 
