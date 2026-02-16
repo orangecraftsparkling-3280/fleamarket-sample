@@ -34,7 +34,31 @@ cp src/.env.example src/.env
 docker compose exec php composer install
 docker compose exec php php artisan key:generate
 docker compose exec php php artisan storage:link
+```
+MySQLコンテナの起動完了までに時間がかかることがあります。
+数秒待ってから下記のコマンドを実行してください。
+
+```bash
 docker compose exec php php artisan migrate --seed
+docker compose exec php chmod -R 777 storage bootstrap/cache
+```
+
+# 💳 決済機能（Stripe）の設定
+本プロジェクトで決済機能を利用するには、StripeのAPIキー設定が必要です。
+
+1, APIキーの取得: [Stripeダッシュボード（APIキー）](https://dashboard.stripe.com/test/apikeys)からテスト用キーを取得します。
+
+2, .envの編集: src/.env の末尾に取得したキーを追記します。
+
+```bash
+STRIPE_PUBLIC_KEY=pk_test_...
+STRIPE_SECRET_KEY=sk_test_...
+```
+
+設定の反映: キーを記述した後、必ず以下のコマンドでキャッシュをクリアしてください。
+
+```Bash
+docker compose exec php php artisan config:clear
 ```
 
 ## 👤 テスト用ログインアカウント
