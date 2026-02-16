@@ -51,8 +51,8 @@ docker compose exec php chmod -R 777 storage bootstrap/cache
 2, .envの編集: src/.env の末尾に取得したキーを追記します。
 
 ```bash
-STRIPE_PUBLIC_KEY=pk_test_...
-STRIPE_SECRET_KEY=sk_test_...
+STRIPE_PUBLIC_KEY=pk_test_...（取得したキー）
+STRIPE_SECRET_KEY=sk_test_...（取得したキー）
 ```
 
 設定の反映: キーを記述した後、必ず以下のコマンドでキャッシュをクリアしてください。
@@ -70,7 +70,12 @@ docker compose exec php php artisan config:clear
 | **メールアドレス** | `user@example.com` |
 | **パスワード**     | `password`         |
 
-> ※ 商品を出品した状態を確認したい場合は、出品者用アカウント（`sell@my.com` / `password`）をご利用ください。
+ ※ 商品を出品した状態を確認したい場合は、以下のユーザーをご利用ください。
+
+| 項目               | 設定値             |
+| :----------------- | :----------------- |
+| **メールアドレス** | `sell@my.com` |
+| **パスワード**     | `password`         |
 
 ## 実行環境
 
@@ -97,7 +102,9 @@ Webサイト: http://localhost
 
 DB管理: http://localhost:8080
 
-メールテスト: http://localhost:8025
+メール承認テスト(MailHog): http://localhost:8025
+
+・会員登録時のメール認証などがこのツールに届きます。
 
 ## 🛠 データベース設計
 
