@@ -6,7 +6,7 @@
 
 @section('content')
 <main class="address-container">
-    <h2 class="page-title">住所の変更</h2>
+    <h1 class="page-title">住所の変更</h1>
 
     <form action="{{ route('address.update', ['item_id' => $item_id]) }}" method="POST">
         @csrf

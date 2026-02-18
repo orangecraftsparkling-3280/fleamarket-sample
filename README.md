@@ -35,6 +35,7 @@ docker compose exec php composer install
 docker compose exec php php artisan key:generate
 docker compose exec php php artisan storage:link
 ```
+
 MySQLコンテナの起動完了までに時間がかかることがあります。
 数秒待ってから下記のコマンドを実行してください。
 
@@ -44,6 +45,7 @@ docker compose exec php chmod -R 777 storage bootstrap/cache
 ```
 
 # 💳 決済機能（Stripe）の設定
+
 本プロジェクトで決済機能を利用するには、StripeのAPIキー設定が必要です。
 
 1, APIキーの取得: [Stripeダッシュボード（APIキー）](https://dashboard.stripe.com/test/apikeys)からテスト用キーを取得します。
@@ -70,12 +72,24 @@ docker compose exec php php artisan config:clear
 | **メールアドレス** | `user@example.com` |
 | **パスワード**     | `password`         |
 
- ※ 商品を出品した状態を確認したい場合は、以下のユーザーをご利用ください。
+※ 商品を出品した状態を確認したい場合は、以下のユーザーをご利用ください。
 
-| 項目               | 設定値             |
-| :----------------- | :----------------- |
+| 項目               | 設定値        |
+| :----------------- | :------------ |
 | **メールアドレス** | `sell@my.com` |
-| **パスワード**     | `password`         |
+| **パスワード**     | `password`    |
+
+## テストの実行と品質担保
+
+本プロジェクトでは、PHPUnit を用いた自動テストを導入し、全 33 項目のテストを通過しています。
+
+### テストの実行方法
+
+コンテナ内で以下のコマンドを実行してください。
+
+```bash
+php artisan test
+```
 
 ## 実行環境
 

@@ -7,12 +7,12 @@
 @section('content')
 <main>
     <div class="list-tab">
-        <a href="{{ route('index') }}"
+        <a href="{{ route('index', ['keyword' => request()->query('keyword')]) }}"
             class="{{ request()->query('tab') !== 'mylist' ? 'active' : '' }}">
             おすすめ
         </a>
 
-        <a href="{{ route('index', ['tab' => 'mylist']) }}"
+        <a href="{{ route('index', ['tab' => 'mylist', 'keyword' => request()->query('keyword')]) }}"
             class="{{ request()->query('tab') === 'mylist' ? 'active' : '' }}">
             マイリスト
         </a>

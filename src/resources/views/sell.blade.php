@@ -6,7 +6,7 @@
 
 @section('content')
 <main class="sell-container">
-    <h2 class="sell-title">商品の出品</h2>
+    <h1 class="sell-title">商品の出品</h1>
 
     <form action="{{ route('item.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -29,7 +29,7 @@
             </div>
         </div>
 
-        <h3 class="sub-title">商品の詳細</h3>
+        <h2 class="sub-title">商品の詳細</h2>
         <hr>
 
         <div class="form-group">

@@ -14,13 +14,13 @@
                 <div class="item-summary">
                     <img src="{{ str_starts_with($item->image_url, 'http') ? $item->image_url : asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}" width="400" height="400">
                     <div class="item-detail">
-                        <h2>{{ $item->name }}</h2>
+                        <h1>{{ $item->name }}</h1>
                         <p>¥{{ number_format($item->price) }}</p>
                     </div>
                 </div>
 
                 <section class="payment-selection">
-                    <h3>支払い方法</h3>
+                    <h2>支払い方法</h2>
                     <div class="select-wrapper">
                         <select name="payment_method" id="payment_method" class="payment-select">
                             <option value="" disabled selected>選択してください</option>
@@ -37,7 +37,7 @@
 
                 <section class="address-selection">
                     <div class="address-header">
-                        <h3>配送先</h3>
+                        <h2>配送先</h2>
                         <a href="{{ route('address.edit', ['item_id' => $item->id]) }}">変更する</a>
                     </div>
                     <p>〒 {{ $address['post_code'] }}</p>

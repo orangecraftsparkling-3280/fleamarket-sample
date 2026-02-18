@@ -16,6 +16,7 @@
 
             <div class="main-info">
                 <h1 class="item-name">{{ $item->name }}</h1>
+                <h2 class="brand-name">ブランド名</h2>
                 <p class="brand-name">{{ $item->brand}}</p>
                 <p class="price">
                     <span class="currency">¥</span>{{ number_format($item->price) }} <span class="tax-in">(税込)</span>
@@ -24,7 +25,7 @@
                 <div class="action-icons">
                     <div class="icon-group">
                         @auth
-                        @if($Favorite)
+                        @if($is_favorite)
                         <form action="{{ route('favorite.destroy', ['item_id' => $item->id]) }}" method="POST" class="favorite-form">
                             @csrf
                             @method('DELETE')

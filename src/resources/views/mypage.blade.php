@@ -15,7 +15,7 @@
                 <div class="default-circle"></div>
                 @endif
             </div>
-            <h2 class="user-name">{{ $user->name }}</h2>
+            <h1 class="user-name">{{ $user->name }}</h1>
         </div>
 
         <a href="{{ url('/mypage/profile') }}" class="btn-edit-profile">プロフィールを編集</a>

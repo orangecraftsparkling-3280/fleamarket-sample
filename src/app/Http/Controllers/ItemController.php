@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Category;
 use App\Models\Condition;
 use App\Http\Requests\ExhibitionRequest;
@@ -15,9 +14,10 @@ class ItemController extends Controller
 
     public function index(Request $request)
     {
-        $query = Item::query();
+        $tab = $request->query('tab');
+        $keyword = $request->query('keyword');
 
-        if ($request->query('tab') === 'mylist') {
+        if ($tab === 'mylist') {
             if (Auth::check()) {
                 /** @var \App\Models\User $user */
                 $user = Auth::user();
@@ -27,36 +27,20 @@ class ItemController extends Controller
                 return view('index', compact('items'));
             }
         } else {
+            $query = Item::query();
+
             if (Auth::check()) {
                 $query->where('user_id', '!=', Auth::id());
             }
         }
 
-        if ($request->filled('keyword')) {
-            $keyword = $request->input('keyword');
-            $query->where('name', 'LIKE', "%{$keyword}%");
+        if ($keyword) {
+            $query->where('name', 'like', '%' . $keyword . '%');
         }
 
-        $items = $query->latest()->get();
+        $items = $query->latest('items.created_at')->get();
 
         return view('index', compact('items'));
-    }
-
-    public function show($id)
-    {
-        $item = Item::with(['categories', 'comments.user'])
-            ->withCount(['favorites', 'comments'])
-            ->findOrFail($id);
-
-        $Favorite = false;
-
-        if (Auth::check()) {
-            /** @var \App\Models\User $user */
-            $user = Auth::user();
-            $Favorite = $user->favoriteItems()->where('item_id', $id)->exists();
-        }
-
-        return view('item_detail', compact('item', 'Favorite'));
     }
 
     public function favorite($item_id)
@@ -81,9 +65,23 @@ class ItemController extends Controller
     {
         $categories = Category::all();
         $conditions = Condition::all();
-        return view('sell', compact('categories','conditions'));
+        return view('sell', compact('categories', 'conditions'));
     }
+    public function show($item_id)
+    {
+        $item = Item::with(['condition', 'categories', 'comments.user'])
+            ->withCount(['favorites', 'comments'])
+            ->findOrFail($item_id);
 
+        $is_favorite = false;
+        if (Auth::check()) {
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+            $is_favorite = $user->favoriteItems()->where('item_id', $item_id)->exists();
+        }
+
+        return view('item_detail', compact('item', 'is_favorite'));
+    }
     public function store(ExhibitionRequest $request)
     {
         $path = null;
@@ -99,7 +97,7 @@ class ItemController extends Controller
             'price'        => $request->price,
             'condition_id' => $request->condition_id,
             'image_url'    => $path,
-            'brand'        => $request->brand,
+            'brand'        => $request->brand ?? 'なし',
         ]);
 
         $item->categories()->attach($request->category_ids);

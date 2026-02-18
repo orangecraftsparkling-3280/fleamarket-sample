@@ -79,12 +79,20 @@ class ItemDetailFeatureTest extends TestCase
         $this->assertDatabaseHas('comments', ['comment' => 'テストコメント投下']);
 
         $this->post(route('comment.store', ['item_id' => $item->id]), ['comment' => '未ログイン'])
-            ->assertRedirect('/');
+            ->assertRedirect("/");
 
-        $response = $this->actingAs($user)
+        $responseEmpty = $this->actingAs($user)
             ->from(route('item.show', ['id' => $item->id]))
             ->post(route('comment.store', ['item_id' => $item->id]), ['comment' => '']);
 
-        $response->assertSessionHasErrors(['comment']);
+        $responseEmpty->assertSessionHasErrors(['comment' => 'コメントを入力してください。']);
+
+        $responseTooLong = $this->actingAs($user)
+            ->from(route('item.show', ['id' => $item->id]))
+            ->post(route('comment.store', ['item_id' => $item->id]), [
+                'comment' => str_repeat('あ', 256)
+            ]);
+
+        $responseTooLong->assertSessionHasErrors(['comment' => 'コメントは255文字以内で入力してください。']);
     }
 }
