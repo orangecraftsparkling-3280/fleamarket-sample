@@ -54,7 +54,7 @@ class ItemSeeder extends Seeder
             [
                 'name' => '革靴',
                 'price' => 4000,
-                'brand' => "なし",
+                'brand' => null,
                 'description' => 'クラシックなデザインの革靴',
                 'image_url' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Leather+Shoes+Product+Photo.jpg',
                 'condition' => '状態が悪い',
@@ -63,7 +63,7 @@ class ItemSeeder extends Seeder
             [
                 'name' => 'ノートPC',
                 'price' => 45000,
-                'brand' => "なし",
+                'brand' => null,
                 'description' => '高性能なノートパソコン',
                 'image_url' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Living+Room+Laptop.jpg',
                 'condition' => '良好',
@@ -81,7 +81,7 @@ class ItemSeeder extends Seeder
             [
                 'name' => 'ショルダーバッグ',
                 'price' => 3500,
-                'brand' => "なし",
+                'brand' => null,
                 'description' => 'おしゃれなショルダーバッグ',
                 'image_url' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Purse+fashion+pocket.jpg',
                 'condition' => 'やや傷や汚れあり',
@@ -108,7 +108,7 @@ class ItemSeeder extends Seeder
             [
                 'name' => 'メイクセット',
                 'price' => 2500,
-                'brand' => "なし",
+                'brand' => null,
                 'description' => '便利なメイクアップセット',
                 'image_url' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/%E5%A4%96%E5%87%BA%E3%83%A1%E3%82%A4%E3%82%AF%E3%82%A2%E3%83%83%E3%83%95%E3%82%9A%E3%82%BB%E3%83%83%E3%83%88.jpg',
                 'condition' => '目立った傷や汚れなし',

@@ -7,7 +7,7 @@
 @section('content')
 <div class="login-form__content">
     <div class="login-form__heading">
-        <h2>ログイン</h2>
+        <h1>ログイン</h1>
     </div>
 
     @error('login_failed')
@@ -16,7 +16,7 @@
     </div>
     @enderror
 
-    <form class="form" action="{{ route('login') }}" method="post">
+    <form class="form" action="{{ route('login') }}" method="post" novalidate>
         @csrf
         <div class="form__group">
             <div class="form__group-title">
