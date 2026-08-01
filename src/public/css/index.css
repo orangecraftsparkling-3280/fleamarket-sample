@@ -26,6 +26,29 @@
     color: #ff4d4d;
 }
 
+.category-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 20px 0 0;
+}
+
+.category-filter a {
+    display: inline-block;
+    padding: 6px 16px;
+    border: 1px solid lightgray;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+}
+
+.category-filter a.active {
+    background-color: #ff4d4d;
+    border-color: #ff4d4d;
+    color: #fff;
+}
+
 .item-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
