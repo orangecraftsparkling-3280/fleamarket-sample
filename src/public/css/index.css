@@ -28,13 +28,18 @@
 
 .category-filter {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 12px;
-    padding: 20px 0 0;
+    padding: 20px 0 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
 }
 
 .category-filter a {
     display: inline-block;
+    flex-shrink: 0;
+    white-space: nowrap;
     padding: 6px 16px;
     border: 1px solid lightgray;
     border-radius: 20px;
