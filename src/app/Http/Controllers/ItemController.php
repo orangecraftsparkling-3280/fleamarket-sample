@@ -35,7 +35,11 @@ class ItemController extends Controller
         }
 
         if ($keyword) {
-            $query->where('name', 'like', '%' . $keyword . '%');
+            $query->where(function ($q) use ($keyword) {
+                $q->where('name', 'like', '%' . $keyword . '%')
+                    ->orWhere('description', 'like', '%' . $keyword . '%')
+                    ->orWhere('brand', 'like', '%' . $keyword . '%');
+            });
         }
 
         $items = $query->latest('items.created_at')->get();

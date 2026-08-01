@@ -38,4 +38,28 @@ class SearchFeatureTest extends TestCase
         $response->assertSee('ヴィンテージジーンズ');
         $response->assertSee('value="ジーンズ"', false);
     }
+
+    public function test_can_search_items_by_description_partial_match()
+    {
+        Item::factory()->create(['name' => '未使用の腕時計', 'description' => 'サウナ好きにおすすめの防水時計です']);
+        Item::factory()->create(['name' => 'スニーカー', 'description' => '通気性が良いスニーカーです']);
+
+        $response = $this->get('/?keyword=サウナ');
+
+        $response->assertStatus(200);
+        $response->assertSee('未使用の腕時計');
+        $response->assertDontSee('スニーカー');
+    }
+
+    public function test_can_search_items_by_brand_partial_match()
+    {
+        Item::factory()->create(['name' => 'バッグ', 'brand' => 'サウナブランド']);
+        Item::factory()->create(['name' => '財布', 'brand' => 'なし']);
+
+        $response = $this->get('/?keyword=サウナ');
+
+        $response->assertStatus(200);
+        $response->assertSee('バッグ');
+        $response->assertDontSee('財布');
+    }
 }
