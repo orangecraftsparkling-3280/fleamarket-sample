@@ -22,7 +22,7 @@
             <div class="image-upload-area">
                 <div id="image-preview" class="image-preview-container">
                     @isset($item)
-                    <img src="{{ str_starts_with($item->image_url, 'http') ? $item->image_url : asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}" style="width:100%;height:auto;">
+                    <img src="{{ str_starts_with($item->image_url, 'http') ? $item->image_url : asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}">
                     @endisset
                 </div>
                 <label for="item_image" class="btn-select-image">画像を選択する</label>
@@ -140,8 +140,6 @@
                     previewContainer.innerHTML = '';
                     const img = document.createElement('img');
                     img.src = event.target.result;
-                    img.style.width = '100%';
-                    img.style.height = 'auto';
                     previewContainer.appendChild(img);
                 }
                 reader.readAsDataURL(file);

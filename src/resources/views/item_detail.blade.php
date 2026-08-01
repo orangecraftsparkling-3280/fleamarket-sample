@@ -123,7 +123,7 @@
                         </div>
                         @auth
                         @if(Auth::id() === $comment->user_id)
-                        <form action="{{ route('comment.update', $comment->id) }}" method="POST" class="comment-edit-form" id="comment-edit-{{ $comment->id }}" style="display:none;">
+                        <form action="{{ route('comment.update', $comment->id) }}" method="POST" class="comment-edit-form" id="comment-edit-{{ $comment->id }}">
                             @csrf
                             @method('PUT')
                             <textarea name="comment" class="comment-textarea">{{ $comment->comment }}</textarea>
@@ -169,9 +169,8 @@
     function toggleCommentEdit(commentId) {
         var view = document.getElementById('comment-view-' + commentId);
         var form = document.getElementById('comment-edit-' + commentId);
-        var isHidden = form.style.display === 'none';
-        form.style.display = isHidden ? 'block' : 'none';
-        view.style.display = isHidden ? 'none' : 'block';
+        view.classList.toggle('is-hidden');
+        form.classList.toggle('is-open');
     }
 </script>
 @endpush

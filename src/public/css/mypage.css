@@ -136,21 +136,51 @@
     padding: 20px 0 60px;
 }
 
-.pagination-wrapper nav > div {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-    justify-content: center;
+/*
+ * Laravel's default pagination view targets Tailwind CSS (sm:hidden /
+ * hidden sm:flex), which this project does not load. Without Tailwind those
+ * classes have no effect, so both the mobile and desktop blocks render at
+ * once. Hide the mobile block and the "Showing X to Y of Z results" text,
+ * keeping only the page-number control row.
+ */
+.pagination-wrapper nav > div:first-child,
+.pagination-wrapper nav > div:last-child > div:first-child,
+.pagination-wrapper nav span[aria-disabled] {
+    display: none;
 }
 
-.pagination-wrapper a,
-.pagination-wrapper span {
-    display: inline-block;
-    padding: 6px 12px;
+.pagination-wrapper nav > div:last-child,
+.pagination-wrapper nav > div:last-child > div:last-child,
+.pagination-wrapper nav > div:last-child > div:last-child > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.pagination-wrapper nav a,
+.pagination-wrapper nav span[aria-current] span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
     border: 1px solid lightgray;
     border-radius: 4px;
     text-decoration: none;
     color: #333;
     font-size: 14px;
+}
+
+.pagination-wrapper nav span[aria-current] span {
+    background-color: #ff4d4d;
+    border-color: #ff4d4d;
+    color: #fff;
+}
+
+.pagination-wrapper nav svg {
+    width: 16px;
+    height: 16px;
 }
