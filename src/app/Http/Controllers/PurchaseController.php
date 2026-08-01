@@ -16,11 +16,7 @@ class PurchaseController extends Controller
         $item = Item::findOrFail($item_id);
         $user = Auth::user();
 
-        $address = session('shipping_address', [
-            'post_code' => $user->profile->post_code ?? '',
-            'address'   => $user->profile->address ?? '',
-            'building'  => $user->profile->building ?? '',
-        ]);
+        $address = $this->resolveShippingAddress($user);
 
         return view('purchase', compact('item', 'user', 'address'));
     }
@@ -28,11 +24,13 @@ class PurchaseController extends Controller
     public function store(PurchaseRequest $request, $item_id)
     {
         $item = Item::findOrFail($item_id);
+        $user = Auth::user();
         $method = $request->payment_method;
 
         Stripe::setApiKey(config('services.stripe.secret'));
 
         $payment_method_types = ($method === 'konbini') ? ['konbini'] : ['card'];
+        $address = $this->resolveShippingAddress($user);
 
         $session = Session::create([
             'payment_method_types' => $payment_method_types,
@@ -49,6 +47,13 @@ class PurchaseController extends Controller
             'mode' => 'payment',
             'success_url' => route('purchase.success', ['item_id' => $item->id]),
             'cancel_url' => route('purchase', ['item_id' => $item->id]),
+            'metadata' => [
+                'user_id'   => (string) $user->id,
+                'item_id'   => (string) $item->id,
+                'post_code' => $address['post_code'],
+                'address'   => $address['address'],
+                'building'  => $address['building'],
+            ],
         ]);
 
         return redirect($session->url, 303);
@@ -56,29 +61,20 @@ class PurchaseController extends Controller
 
     public function success($item_id)
     {
-        $item = Item::findOrFail($item_id);
-        $user = Auth::user();
+        Item::findOrFail($item_id);
 
-        if ($item->is_sold) {
-            return redirect()->route('index')->with('error', '売り切れです');
-        }
+        session()->forget('shipping_address');
 
-        app('db')->transaction(function () use ($item, $user) {
-            $tempAddress = session('shipping_address');
+        return redirect('/')->with('message', 'ご購入ありがとうございました。決済確認後、購入が確定します。');
+    }
 
-            $item->purchase()->create([
-                'user_id'   => $user->id,
-                'post_code' => $tempAddress['post_code'] ?? $user->profile->post_code,
-                'address'   => $tempAddress['address']   ?? $user->profile->address,
-                'building'  => $tempAddress['building']  ?? $user->profile->building,
-            ]);
-
-            $item->update(['is_sold' => true]);
-
-            session()->forget('shipping_address');
-        });
-
-        return redirect('/')->with('message', '購入完了！');
+    private function resolveShippingAddress($user): array
+    {
+        return session('shipping_address', [
+            'post_code' => $user->profile->post_code ?? '',
+            'address'   => $user->profile->address ?? '',
+            'building'  => $user->profile->building ?? '',
+        ]);
     }
 
     public function editAddress($item_id)

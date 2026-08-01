@@ -10,10 +10,13 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisteredController;
 use App\Http\Controllers\MypageController;
+use App\Http\Controllers\StripeWebhookController;
 
 
 Route::get('/', [ItemController::class, 'index'])->name('index');
 Route::get('/item/{id}', [ItemController::class, 'show'])->name('item.show');
+
+Route::post('/stripe/webhook', [StripeWebhookController::class, 'handle'])->name('stripe.webhook');
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -51,6 +54,9 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/sell', [ItemController::class, 'create'])->name('item.create');
         Route::post('/sell', [ItemController::class, 'store'])->name('item.store');
+        Route::get('/item/{id}/edit', [ItemController::class, 'edit'])->name('item.edit');
+        Route::put('/item/{id}', [ItemController::class, 'update'])->name('item.update');
+        Route::delete('/item/{id}', [ItemController::class, 'destroy'])->name('item.destroy');
         Route::get('/purchase/{item_id}', [PurchaseController::class, 'index'])->name('purchase');
         Route::post('/purchase/{item_id}', [PurchaseController::class, 'store'])->name('purchase.store');
         Route::get('/purchase/success/{item_id}', [PurchaseController::class, 'success'])->name('purchase.success');

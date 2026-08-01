@@ -19,6 +19,19 @@
     </div>
 
     <div class="container">
+        <div class="category-filter">
+            <a href="{{ route('index', array_filter(['tab' => request('tab'), 'keyword' => request('keyword')])) }}"
+                class="{{ !request('category') ? 'active' : '' }}">
+                すべて
+            </a>
+            @foreach($categories as $category)
+            <a href="{{ route('index', array_filter(['tab' => request('tab'), 'keyword' => request('keyword'), 'category' => $category->id])) }}"
+                class="{{ (int) request('category') === $category->id ? 'active' : '' }}">
+                {{ $category->name }}
+            </a>
+            @endforeach
+        </div>
+
         <div class="item-grid">
             @foreach($items as $item)
             <a href="{{ route('item.show', $item->id) }}" class="item-card">

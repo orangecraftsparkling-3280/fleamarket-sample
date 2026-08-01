@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Category;
 use App\Models\Condition;
 use App\Http\Requests\ExhibitionRequest;
+use App\Http\Requests\ItemUpdateRequest;
 
 class ItemController extends Controller
 {
@@ -16,6 +18,8 @@ class ItemController extends Controller
     {
         $tab = $request->query('tab');
         $keyword = $request->query('keyword');
+        $categoryId = $request->query('category');
+        $categories = Category::all();
 
         if ($tab === 'mylist') {
             if (Auth::check()) {
@@ -23,8 +27,8 @@ class ItemController extends Controller
                 $user = Auth::user();
                 $query = $user->favoriteItems();
             } else {
-                $items = Item::query()->whereRaw('1 = 0')->paginate(12);
-                return view('index', compact('items'));
+                $items = collect([]);
+                return view('index', compact('items', 'categories'));
             }
         } else {
             $query = Item::query();
@@ -35,12 +39,22 @@ class ItemController extends Controller
         }
 
         if ($keyword) {
-            $query->where('name', 'like', '%' . $keyword . '%');
+            $query->where(function ($q) use ($keyword) {
+                $q->where('name', 'like', '%' . $keyword . '%')
+                    ->orWhere('description', 'like', '%' . $keyword . '%')
+                    ->orWhere('brand', 'like', '%' . $keyword . '%');
+            });
+        }
+
+        if ($categoryId) {
+            $query->whereHas('categories', function ($q) use ($categoryId) {
+                $q->where('categories.id', $categoryId);
+            });
         }
 
         $items = $query->latest('items.created_at')->paginate(12)->withQueryString();
 
-        return view('index', compact('items'));
+        return view('index', compact('items', 'categories'));
     }
 
     public function favorite($item_id)
@@ -103,5 +117,64 @@ class ItemController extends Controller
         $item->categories()->attach($request->category_ids);
 
         return redirect('/')->with('message', '商品を出品しました！');
+    }
+
+    public function edit($item_id)
+    {
+        $item = Item::with('categories')->findOrFail($item_id);
+
+        abort_if($item->user_id !== Auth::id(), 403);
+
+        $categories = Category::all();
+        $conditions = Condition::all();
+        $categoryIds = $item->categories->pluck('id')->toArray();
+
+        return view('sell', compact('item', 'categories', 'conditions', 'categoryIds'));
+    }
+
+    public function update(ItemUpdateRequest $request, $item_id)
+    {
+        $item = Item::findOrFail($item_id);
+
+        abort_if($item->user_id !== Auth::id(), 403);
+
+        $data = [
+            'name'         => $request->name,
+            'description'  => $request->description,
+            'price'        => $request->price,
+            'condition_id' => $request->condition_id,
+            'brand'        => $request->brand ?? 'なし',
+        ];
+
+        if ($request->hasFile('item_image')) {
+            if ($item->image_url) {
+                Storage::disk('public')->delete($item->image_url);
+            }
+            $data['image_url'] = $request->file('item_image')->store('items', 'public');
+        }
+
+        $item->update($data);
+        $item->categories()->sync($request->category_ids);
+
+        return redirect()->route('item.show', $item->id)->with('message', '商品を更新しました！');
+    }
+
+    public function destroy($item_id)
+    {
+        $item = Item::findOrFail($item_id);
+
+        abort_if($item->user_id !== Auth::id(), 403);
+
+        if ($item->is_sold) {
+            return back()->with('error', '売却済みの商品は削除できません');
+        }
+
+        if ($item->image_url) {
+            Storage::disk('public')->delete($item->image_url);
+        }
+
+        $item->delete();
+
+        return redirect()->route('mypage')->with('message', '商品を削除しました');
     }
 }
