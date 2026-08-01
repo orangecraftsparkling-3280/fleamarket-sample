@@ -83,7 +83,7 @@ class ItemController extends Controller
     }
     public function show($item_id)
     {
-        $item = Item::with(['condition', 'categories', 'comments.user'])
+        $item = Item::with(['condition', 'categories', 'comments.user.profile'])
             ->withCount(['favorites', 'comments'])
             ->findOrFail($item_id);
 
