@@ -52,7 +52,7 @@ class ItemController extends Controller
             });
         }
 
-        $items = $query->latest('items.created_at')->get();
+        $items = $query->latest('items.created_at')->paginate(12)->withQueryString();
 
         return view('index', compact('items', 'categories'));
     }
