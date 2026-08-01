@@ -9,6 +9,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Item;
+use App\Models\Condition;
 
 class SellFeatureTest extends TestCase
 {
@@ -61,5 +62,28 @@ class SellFeatureTest extends TestCase
             Storage::disk('public')->exists($item->image_url),
             "ファイル [{$item->image_url}] がストレージに存在しません。"
         );
+    }
+
+    public function test_oversized_item_image_is_rejected()
+    {
+        Storage::fake('public');
+
+        /** @var User $user */
+        $user = User::factory()->create(['email_verified_at' => now()]);
+        $category = Category::create(['name' => 'ファッション']);
+        Condition::firstOrCreate(['id' => 1], ['condition' => '良好']);
+        $file = UploadedFile::fake()->create('too_big.jpg', 3000, 'image/jpeg');
+
+        $response = $this->actingAs($user)->post(route('item.store'), [
+            'name'         => 'テスト商品名',
+            'description'  => '商品の説明文です。',
+            'price'        => 5000,
+            'condition_id' => 1,
+            'category_ids' => [$category->id],
+            'item_image'   => $file,
+        ]);
+
+        $response->assertSessionHasErrors(['item_image']);
+        $this->assertDatabaseMissing('items', ['name' => 'テスト商品名']);
     }
 }
