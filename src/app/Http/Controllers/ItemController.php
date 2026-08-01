@@ -18,6 +18,8 @@ class ItemController extends Controller
     {
         $tab = $request->query('tab');
         $keyword = $request->query('keyword');
+        $categoryId = $request->query('category');
+        $categories = Category::all();
 
         if ($tab === 'mylist') {
             if (Auth::check()) {
@@ -26,7 +28,7 @@ class ItemController extends Controller
                 $query = $user->favoriteItems();
             } else {
                 $items = collect([]);
-                return view('index', compact('items'));
+                return view('index', compact('items', 'categories'));
             }
         } else {
             $query = Item::query();
@@ -40,9 +42,15 @@ class ItemController extends Controller
             $query->where('name', 'like', '%' . $keyword . '%');
         }
 
+        if ($categoryId) {
+            $query->whereHas('categories', function ($q) use ($categoryId) {
+                $q->where('categories.id', $categoryId);
+            });
+        }
+
         $items = $query->latest('items.created_at')->get();
 
-        return view('index', compact('items'));
+        return view('index', compact('items', 'categories'));
     }
 
     public function favorite($item_id)
