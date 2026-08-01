@@ -16,9 +16,9 @@ class MypageController extends Controller
         $tab = $request->query('tab', 'sell');
 
         if ($tab === 'buy') {
-            $items = $user->boughtItems()->get();
+            $items = $user->boughtItems()->latest('items.created_at')->paginate(12)->withQueryString();
         } else {
-            $items = Item::where('user_id', $user->id)->get();
+            $items = Item::where('user_id', $user->id)->latest('created_at')->paginate(12)->withQueryString();
         }
 
         return view('mypage', compact('user', 'items', 'tab'));
