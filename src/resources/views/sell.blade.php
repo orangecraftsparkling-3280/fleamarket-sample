@@ -6,10 +6,13 @@
 
 @section('content')
 <main class="sell-container">
-    <h1 class="sell-title">商品の出品</h1>
+    <h1 class="sell-title">{{ isset($item) ? '商品の編集' : '商品の出品' }}</h1>
 
-    <form action="{{ route('item.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ isset($item) ? route('item.update', $item->id) : route('item.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
+        @if(isset($item))
+        @method('PUT')
+        @endif
 
         <div class="form__group">
             <div class="form__group-title">
@@ -18,6 +21,9 @@
 
             <div class="image-upload-area">
                 <div id="image-preview" class="image-preview-container">
+                    @isset($item)
+                    <img src="{{ str_starts_with($item->image_url, 'http') ? $item->image_url : asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}" style="width:100%;height:auto;">
+                    @endisset
                 </div>
                 <label for="item_image" class="btn-select-image">画像を選択する</label>
                 <input type="file" name="item_image" id="item_image" accept="image/*" class="hidden-file-input">
@@ -41,7 +47,7 @@
                         name="category_ids[]"
                         value="{{ $category->id }}"
                         id="cat{{ $category->id }}"
-                        {{ (is_array(old('category_ids')) && in_array($category->id, old('category_ids'))) ? 'checked' : '' }}>
+                        {{ (is_array(old('category_ids')) ? in_array($category->id, old('category_ids')) : (isset($categoryIds) && in_array($category->id, $categoryIds))) ? 'checked' : '' }}>
                     <label for="cat{{ $category->id }}">{{ $category->name }}</label>
                 </div>
                 @endforeach
@@ -56,10 +62,10 @@
         <div class="form-group">
             <label for="condition" class="form-label">商品の状態</label>
             <select name="condition_id" id="condition" class="form-input condition-select">
-                <option value="" disabled {{ old('condition_id') === null ? 'selected' : '' }}>選択してください</option>
+                <option value="" disabled {{ old('condition_id') === null && !isset($item) ? 'selected' : '' }}>選択してください</option>
                 @foreach($conditions as $condition)
                 <option value="{{ $condition->id }}"
-                    {{ old('condition_id') == $condition->id ? 'selected' : '' }}>
+                    {{ old('condition_id', $item->condition_id ?? null) == $condition->id ? 'selected' : '' }}>
                     {{ $condition->condition }}
                 </option>
                 @endforeach
