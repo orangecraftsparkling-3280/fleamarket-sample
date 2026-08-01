@@ -55,6 +55,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/purchase/{item_id}', [PurchaseController::class, 'store'])->name('purchase.store');
         Route::get('/purchase/success/{item_id}', [PurchaseController::class, 'success'])->name('purchase.success');
         Route::post('/item/{item_id}/comment', [CommentController::class, 'store'])->name('comment.store');
+        Route::put('/comment/{comment_id}', [CommentController::class, 'update'])->name('comment.update');
+        Route::delete('/comment/{comment_id}', [CommentController::class, 'destroy'])->name('comment.destroy');
         Route::post('/favorite/{item_id}', [ItemController::class, 'favorite'])->name('favorite.store');
         Route::delete('/favorite/{item_id}', [ItemController::class, 'unfavorite'])->name('favorite.destroy');
     });

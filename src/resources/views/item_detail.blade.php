@@ -106,9 +106,36 @@
                             </div>
                             <span class="user-name">{{ $comment->user->name }}</span>
                         </div>
-                        <div class="comment-content">
+                        <div class="comment-content" id="comment-view-{{ $comment->id }}">
                             <p>{{ $comment->comment }}</p>
+                            @auth
+                            @if(Auth::id() === $comment->user_id)
+                            <div class="comment-actions">
+                                <button type="button" class="btn-link" onclick="toggleCommentEdit({{ $comment->id }})">編集</button>
+                                <form action="{{ route('comment.destroy', $comment->id) }}" method="POST" class="inline-form" onsubmit="return confirm('このコメントを削除しますか？');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-link btn-link--danger">削除</button>
+                                </form>
+                            </div>
+                            @endif
+                            @endauth
                         </div>
+                        @auth
+                        @if(Auth::id() === $comment->user_id)
+                        <form action="{{ route('comment.update', $comment->id) }}" method="POST" class="comment-edit-form" id="comment-edit-{{ $comment->id }}" style="display:none;">
+                            @csrf
+                            @method('PUT')
+                            <textarea name="comment" class="comment-textarea">{{ $comment->comment }}</textarea>
+                            <div class="form__error">
+                                @error('comment')
+                                {{ $message }}
+                                @enderror
+                            </div>
+                            <button type="submit" class="btn-secondary">更新する</button>
+                        </form>
+                        @endif
+                        @endauth
                     </div>
                     @empty
                     <p class="no-comments">コメントはまだありません。</p>
@@ -137,4 +164,15 @@
         </div>
     </div>
 </main>
+@push('scripts')
+<script>
+    function toggleCommentEdit(commentId) {
+        var view = document.getElementById('comment-view-' + commentId);
+        var form = document.getElementById('comment-edit-' + commentId);
+        var isHidden = form.style.display === 'none';
+        form.style.display = isHidden ? 'block' : 'none';
+        view.style.display = isHidden ? 'none' : 'block';
+    }
+</script>
+@endpush
 @endsection

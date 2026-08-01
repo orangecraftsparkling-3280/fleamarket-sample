@@ -18,4 +18,26 @@ class CommentController extends Controller
 
         return back()->with('success', 'コメントを投稿しました');
     }
+
+    public function update(CommentRequest $request, $comment_id)
+    {
+        $comment = Comment::findOrFail($comment_id);
+
+        abort_if($comment->user_id !== Auth::id(), 403);
+
+        $comment->update(['comment' => $request->comment]);
+
+        return back()->with('success', 'コメントを更新しました');
+    }
+
+    public function destroy($comment_id)
+    {
+        $comment = Comment::findOrFail($comment_id);
+
+        abort_if($comment->user_id !== Auth::id(), 403);
+
+        $comment->delete();
+
+        return back()->with('success', 'コメントを削除しました');
+    }
 }
