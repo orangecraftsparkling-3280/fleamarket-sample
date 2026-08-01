@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ProfileRequest;
@@ -51,20 +50,5 @@ class ProfileController extends Controller
         );
 
         return redirect('/');
-    }
-
-    public function index(Request $request)
-    {
-        /** @var User $user */
-        $user = Auth::user();
-        $user->load('profile');
-
-        if ($request->tab === 'buy') {
-            $items = $user->boughtItems()->get();
-        } else {
-            $items = $user->items()->get();
-        }
-
-        return view('mypage', compact('user', 'items'));
     }
 }
