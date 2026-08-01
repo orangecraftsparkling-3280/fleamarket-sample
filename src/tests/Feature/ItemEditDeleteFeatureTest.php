@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Category;
@@ -38,6 +40,33 @@ class ItemEditDeleteFeatureTest extends TestCase
             'name' => '更新後の商品名',
             'price' => 3000,
         ]);
+    }
+
+    public function test_oversized_item_image_is_rejected_on_update()
+    {
+        Storage::fake('public');
+
+        /** @var User $user */
+        $user = User::factory()->create(['email_verified_at' => now()]);
+        $category = Category::create(['name' => 'ファッション']);
+        Condition::firstOrCreate(['id' => 1], ['condition' => '良好']);
+
+        $item = Item::factory()->create(['user_id' => $user->id]);
+        $item->categories()->attach($category->id);
+
+        $file = UploadedFile::fake()->create('too_big.jpg', 3000, 'image/jpeg');
+
+        $response = $this->actingAs($user)->put(route('item.update', $item->id), [
+            'name'         => '更新後の商品名',
+            'description'  => '更新後の説明文です。',
+            'price'        => 3000,
+            'condition_id' => 1,
+            'category_ids' => [$category->id],
+            'item_image'   => $file,
+        ]);
+
+        $response->assertSessionHasErrors(['item_image']);
+        $this->assertDatabaseMissing('items', ['id' => $item->id, 'name' => '更新後の商品名']);
     }
 
     public function test_non_owner_cannot_update_item()

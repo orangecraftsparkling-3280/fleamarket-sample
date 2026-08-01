@@ -78,4 +78,25 @@ class ProfileFeatureTest extends TestCase
         $profile = Profile::where('user_id', $user->id)->first();
         $this->assertTrue(Storage::disk('public')->exists($profile->img_path));
     }
+
+    public function test_oversized_profile_image_is_rejected()
+    {
+        Storage::fake('public');
+
+        /** @var User $user */
+        $user = User::factory()->create(['email_verified_at' => now()]);
+        Profile::factory()->create(['user_id' => $user->id]);
+
+        $file = UploadedFile::fake()->create('too_big.jpg', 3000, 'image/jpeg');
+
+        $response = $this->actingAs($user)->post(route('profile.update'), [
+            'name' => '更新後の名前',
+            'img_path' => $file,
+            'post_code' => '123-4567',
+            'address' => '更新後の住所',
+        ]);
+
+        $response->assertSessionHasErrors(['img_path']);
+        $this->assertDatabaseMissing('users', ['id' => $user->id, 'name' => '更新後の名前']);
+    }
 }
