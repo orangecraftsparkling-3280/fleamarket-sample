@@ -51,6 +51,9 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/sell', [ItemController::class, 'create'])->name('item.create');
         Route::post('/sell', [ItemController::class, 'store'])->name('item.store');
+        Route::get('/item/{id}/edit', [ItemController::class, 'edit'])->name('item.edit');
+        Route::put('/item/{id}', [ItemController::class, 'update'])->name('item.update');
+        Route::delete('/item/{id}', [ItemController::class, 'destroy'])->name('item.destroy');
         Route::get('/purchase/{item_id}', [PurchaseController::class, 'index'])->name('purchase');
         Route::post('/purchase/{item_id}', [PurchaseController::class, 'store'])->name('purchase.store');
         Route::get('/purchase/success/{item_id}', [PurchaseController::class, 'success'])->name('purchase.success');

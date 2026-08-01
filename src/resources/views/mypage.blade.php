@@ -35,15 +35,29 @@
     <div class="product-list">
         <div class="item-grid">
             @forelse($items as $item)
-            <a href="{{ route('item.show', $item->id) }}" class="item-card">
-                <div class="item-image-wrapper">
-                    <img src="{{ str_starts_with($item->image_url, 'http') ? $item->image_url : asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}">
-                    @if($item->is_sold)
-                    <span class="sold-label">SOLD</span>
-                    @endif
+            <div class="item-card-wrapper">
+                <a href="{{ route('item.show', $item->id) }}" class="item-card">
+                    <div class="item-image-wrapper">
+                        <img src="{{ str_starts_with($item->image_url, 'http') ? $item->image_url : asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}">
+                        @if($item->is_sold)
+                        <span class="sold-label">SOLD</span>
+                        @endif
+                    </div>
+                    <p class="item-name">{{ $item->name }}</p>
+                </a>
+                @if(request('tab') != 'buy' && $item->user_id === $user->id)
+                <div class="item-actions">
+                    <a href="{{ route('item.edit', $item->id) }}" class="btn-edit-item">編集</a>
+                    @unless($item->is_sold)
+                    <form action="{{ route('item.destroy', $item->id) }}" method="POST" onsubmit="return confirm('この商品を削除しますか？');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn-delete-item">削除</button>
+                    </form>
+                    @endunless
                 </div>
-                <p class="item-name">{{ $item->name }}</p>
-            </a>
+                @endif
+            </div>
             @empty
             <p class="empty-message">
                 {{ request('tab') == 'buy' ? '購入した商品はありません' : '出品した商品はありません' }}
