@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Item;
 use App\Models\Profile;
 use Stripe\Checkout\Session;
+use Stripe\Webhook;
 
 class PurchaseFeatureTest extends TestCase
 {
@@ -61,7 +62,27 @@ class PurchaseFeatureTest extends TestCase
             'address' => '秋田県大仙市',
         ])->assertStatus(303);
 
-        $this->actingAs($user)->get(route('purchase.success', ['item_id' => $item->id]));
+        // 実際の購入確定はStripe Webhook経由で行われるためイベントを模擬する
+        \Mockery::mock('alias:' . Webhook::class)
+            ->shouldReceive('constructEvent')
+            ->andReturn((object)[
+                'type' => 'checkout.session.completed',
+                'data' => (object)[
+                    'object' => (object)[
+                        'payment_status' => 'paid',
+                        'metadata' => (object)[
+                            'user_id'   => (string) $user->id,
+                            'item_id'   => (string) $item->id,
+                            'post_code' => '888-8888',
+                            'address'   => '秋田県大仙市',
+                            'building'  => '大曲ビル',
+                        ],
+                    ],
+                ],
+            ]);
+
+        $this->postJson('/stripe/webhook', [], ['Stripe-Signature' => 'test'])
+            ->assertStatus(200);
 
         $this->assertDatabaseHas('items', [
             'id' => $item->id,
@@ -72,6 +93,8 @@ class PurchaseFeatureTest extends TestCase
             'item_id' => $item->id,
             'user_id' => $user->id,
         ]);
+
+        $this->actingAs($user)->get(route('purchase.success', ['item_id' => $item->id]));
 
         $this->actingAs($user)->get('/mypage?tab=buy')->assertSee('テスト商品');
     }
