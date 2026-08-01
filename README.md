@@ -63,6 +63,36 @@ STRIPE_SECRET_KEY=sk_test_...（取得したキー）
 docker compose exec php php artisan config:clear
 ```
 
+### Webhookの設定（ローカル動作確認）
+
+購入確定処理（`purchases`テーブルへの登録・`is_sold`の更新）は、決済完了後のブラウザリダイレクトではなく、StripeからのWebhook（`checkout.session.completed` / `checkout.session.async_payment_succeeded`）を起点に行われます。ローカルで購入フローを最後まで確認するには、Webhookの設定が必要です。
+
+1, [Stripe CLI](https://stripe.com/docs/stripe-cli)をインストールし、ログインします。
+
+```bash
+stripe login
+```
+
+2, Webhookイベントをローカルのエンドポイントに転送します。
+
+```bash
+stripe listen --forward-to localhost/stripe/webhook
+```
+
+起動時に表示される`whsec_...`から始まる署名シークレットを、src/.env の末尾に追記します。
+
+```bash
+STRIPE_WEBHOOK_SECRET=whsec_...（表示されたシークレット）
+```
+
+設定後、必ずキャッシュをクリアしてください。
+
+```bash
+docker compose exec php php artisan config:clear
+```
+
+`stripe listen`を実行したまま購入フローを行うと、決済完了後にWebhookが転送され購入が確定します。
+
 ## 👤 テスト用ログインアカウント
 
 環境構築後の動作確認用に、以下のユーザーでログイン可能です
