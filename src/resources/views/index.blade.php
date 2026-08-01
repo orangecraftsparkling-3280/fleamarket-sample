@@ -34,6 +34,10 @@
             </a>
             @endforeach
         </div>
+
+        <div class="pagination-wrapper">
+            {{ $items->links() }}
+        </div>
     </div>
 </main>
 @endsection

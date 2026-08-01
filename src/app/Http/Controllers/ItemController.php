@@ -23,7 +23,7 @@ class ItemController extends Controller
                 $user = Auth::user();
                 $query = $user->favoriteItems();
             } else {
-                $items = collect([]);
+                $items = Item::query()->whereRaw('1 = 0')->paginate(12);
                 return view('index', compact('items'));
             }
         } else {
@@ -38,7 +38,7 @@ class ItemController extends Controller
             $query->where('name', 'like', '%' . $keyword . '%');
         }
 
-        $items = $query->latest('items.created_at')->get();
+        $items = $query->latest('items.created_at')->paginate(12)->withQueryString();
 
         return view('index', compact('items'));
     }
