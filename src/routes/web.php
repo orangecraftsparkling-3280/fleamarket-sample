@@ -10,10 +10,13 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisteredController;
 use App\Http\Controllers\MypageController;
+use App\Http\Controllers\StripeWebhookController;
 
 
 Route::get('/', [ItemController::class, 'index'])->name('index');
 Route::get('/item/{id}', [ItemController::class, 'show'])->name('item.show');
+
+Route::post('/stripe/webhook', [StripeWebhookController::class, 'handle'])->name('stripe.webhook');
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
