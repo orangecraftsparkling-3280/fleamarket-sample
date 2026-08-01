@@ -27,7 +27,7 @@ class ItemController extends Controller
                 $user = Auth::user();
                 $query = $user->favoriteItems();
             } else {
-                $items = collect([]);
+                $items = Item::query()->whereRaw('1 = 0')->paginate(12);
                 return view('index', compact('items', 'categories'));
             }
         } else {

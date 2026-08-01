@@ -52,6 +52,7 @@ class MyListFeatureTest extends TestCase
 
         $response = $this->get('/?tab=mylist');
 
+        $response->assertStatus(200);
         $response->assertDontSee('誰かの商品');
     }
 }
