@@ -102,7 +102,7 @@
                     <div class="comment-card">
                         <div class="comment-user">
                             <div class="user-avatar-small">
-                                <img src="{{ $comment->user->profile->getAvatarUrl() }}" alt="ユーザーアイコン">
+                                <img src="{{ $comment->user->profile?->getAvatarUrl() ?? asset('images/default-user.png') }}" alt="ユーザーアイコン">
                             </div>
                             <span class="user-name">{{ $comment->user->name }}</span>
                         </div>
