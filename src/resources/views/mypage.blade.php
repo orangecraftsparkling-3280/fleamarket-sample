@@ -64,6 +64,10 @@
             </p>
             @endforelse
         </div>
+
+        <div class="pagination-wrapper">
+            {{ $items->links() }}
+        </div>
     </div>
 </div>
 @endsection
