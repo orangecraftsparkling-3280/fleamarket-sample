@@ -79,6 +79,7 @@
     display: block;
     text-decoration: none;
     color: var(--color-text);
+    min-width: 0;
 }
 
 .item-image-wrapper {
@@ -113,6 +114,7 @@
 
 .item-card-wrapper {
     display: block;
+    min-width: 0;
 }
 
 .item-actions {
