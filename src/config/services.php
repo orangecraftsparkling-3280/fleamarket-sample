@@ -36,4 +36,8 @@ return [
         'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
     ],
 
+    'mailhog' => [
+        'url' => env('MAILHOG_URL', 'http://localhost:8025'),
+    ],
+
 ];

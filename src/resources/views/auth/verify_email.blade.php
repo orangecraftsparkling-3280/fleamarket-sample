@@ -22,6 +22,10 @@ $service = $mailerUrls[$domain] ?? [
 'name' => 'メールソフト',
 'url' => 'https://www.google.com/search?q=' . urlencode($domain . ' ログイン')
 ];
+
+if (config('mail.mailers.smtp.host') === 'mailhog') {
+$service = ['name' => 'MailHog', 'url' => config('services.mailhog.url')];
+}
 @endphp
 
 <div class="verify-form__content">
