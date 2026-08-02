@@ -9,7 +9,7 @@
 .list-tab {
     display: flex;
     gap: 40px;
-    margin: 40px 0;
+    margin: 20px 0;
     border-bottom: 2px solid #717171;
     padding-left: 300px;
 }
