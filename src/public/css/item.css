@@ -29,11 +29,6 @@
     margin-bottom: 5px;
 }
 
-.brand-name{
-    font-size: 20px;
-    margin-bottom: 5px;
-}
-
 .brand-name {
     font-size: 16px;
     color: #333;
@@ -263,4 +258,24 @@
 
 .comment-edit-form .comment-textarea {
     height: 80px;
+}
+
+@media (max-width: 768px) {
+    .item-detail-layout {
+        flex-direction: column;
+        gap: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .item-detail-layout {
+        padding: 20px 15px;
+        gap: 20px;
+    }
+
+    .info-table th,
+    .info-table td {
+        padding: 8px 0;
+        font-size: 14px;
+    }
 }

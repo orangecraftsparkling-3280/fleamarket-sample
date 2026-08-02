@@ -184,3 +184,22 @@
     width: 16px;
     height: 16px;
 }
+
+@media (max-width: 768px) {
+    .item-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .item-grid {
+        gap: 12px;
+    }
+
+    .user-info {
+        flex-wrap: wrap;
+        gap: 16px;
+        justify-content: flex-start;
+    }
+}

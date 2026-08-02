@@ -1,3 +1,5 @@
+/* Breakpoints: tablet <=768px, mobile <=480px (desktop-first, max-width) */
+
 .site-header {
     width: 100%;
     background-color: #000000;
@@ -73,4 +75,60 @@
 .sell-btn:hover {
     background-color: #eee;
     opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .header-inner {
+        flex-wrap: wrap;
+        row-gap: 10px;
+    }
+
+    .header-logo {
+        margin-right: 0;
+        min-width: 0;
+    }
+
+    .header-logo img {
+        height: auto;
+        max-width: 220px;
+    }
+
+    .header-search-container {
+        order: 3;
+        flex: 1 0 100%;
+        padding: 0;
+    }
+
+    .header-nav {
+        flex: 1 0 auto;
+        justify-content: flex-end;
+        gap: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-nav {
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .header-nav a,
+    .header-nav__button {
+        font-size: 13px;
+    }
+
+    .sell-btn {
+        padding: 4px 10px;
+        font-size: 13px;
+    }
+
+    .header-search input {
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+
+    .header-logo img {
+        max-width: 140px;
+    }
 }
