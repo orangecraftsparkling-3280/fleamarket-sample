@@ -111,7 +111,7 @@ docker compose exec php php artisan config:clear
 
 ## テストの実行と品質担保
 
-本プロジェクトでは、PHPUnit を用いた自動テストを導入し、全 33 項目のテストを通過しています。
+本プロジェクトでは、PHPUnit を用いた自動テストを導入し、全 59 項目のテストを通過しています。
 
 ### テストの実行方法
 
