@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fleamarket</title>
+    <title>Latte&amp;Item</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
@@ -19,12 +19,12 @@
             <div class="header-logo">
                 <a href="{{ url('/') }}" class="logo-link">
                     <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path d="M10 18 H34 V26 A10 8 0 0 1 24 34 H20 A10 8 0 0 1 10 26 Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
-                        <path d="M34 21 h3 a4 4 0 0 1 0 8 h-3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M15 14 q2 -3 0 -6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M22 14 q2 -3 0 -6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M10 18 H34 V26 A10 8 0 0 1 24 34 H20 A10 8 0 0 1 10 26 Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" />
+                        <path d="M34 21 h3 a4 4 0 0 1 0 8 h-3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M15 14 q2 -3 0 -6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        <path d="M22 14 q2 -3 0 -6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                     </svg>
-                    <span class="logo-text">coachtechフリマ</span>
+                    <span class="logo-text">Latte&amp;Item</span>
                 </a>
             </div>
             @if(!Route::is('login') && !Route::is('register'))
