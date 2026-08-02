@@ -170,3 +170,25 @@
     transform: rotate(-45deg);
     display: block;
 }
+
+@media (max-width: 768px) {
+    .list-tab {
+        padding-left: 40px;
+    }
+
+    .item-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .list-tab {
+        padding-left: 20px;
+        gap: 24px;
+    }
+
+    .item-grid {
+        gap: 12px;
+    }
+}
