@@ -10,7 +10,7 @@
     display: flex;
     gap: 40px;
     margin: 20px 0;
-    border-bottom: 2px solid #717171;
+    border-bottom: 2px solid var(--color-border-strong);
     padding-left: 300px;
 }
 
@@ -20,10 +20,11 @@
     cursor: pointer;
     position: relative;
     top: 2px;
+    color: var(--color-text-muted);
 }
 
 .list-tab a.active {
-    color: #ff4d4d;
+    color: var(--color-primary);
 }
 
 .category-filter {
@@ -41,16 +42,17 @@
     flex-shrink: 0;
     white-space: nowrap;
     padding: 6px 16px;
-    border: 1px solid lightgray;
-    border-radius: 20px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
     text-decoration: none;
-    color: #333;
+    color: var(--color-text);
     font-size: 14px;
+    transition: background-color var(--transition-base), color var(--transition-base);
 }
 
 .category-filter a.active {
-    background-color: #ff4d4d;
-    border-color: #ff4d4d;
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
     color: #fff;
 }
 
@@ -64,7 +66,7 @@
 .item-card {
     display: block;
     text-decoration: none;
-    color: #333;
+    color: var(--color-text);
 }
 
 .item-image-wrapper {
@@ -72,8 +74,15 @@
     width: 100%;
     aspect-ratio: 1 / 1;
     overflow: hidden;
-    border-radius: 4px;
-    background-color: #f5f5f5;
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+.item-card:hover .item-image-wrapper {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
 }
 
 .item-image-wrapper img {
@@ -97,7 +106,7 @@
     left: 0;
     width: 80px;
     height: 80px;
-    background-color: #ff4d4d;
+    background-color: var(--color-primary-dark);
     clip-path: polygon(0 0, 100% 0, 0 100%);
     z-index: 10;
 }
@@ -139,16 +148,16 @@
     min-width: 36px;
     height: 36px;
     padding: 0 10px;
-    border: 1px solid lightgray;
-    border-radius: 4px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
     text-decoration: none;
-    color: #333;
+    color: var(--color-text);
     font-size: 14px;
 }
 
 .pagination-wrapper nav span[aria-current] span {
-    background-color: #ff4d4d;
-    border-color: #ff4d4d;
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
     color: #fff;
 }
 

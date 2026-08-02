@@ -26,8 +26,8 @@
     height: 100px;
     border-radius: 50%;
     object-fit: cover;
-    background-color: #eee;
-    border: 1px solid #ddd;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
     flex-shrink: 0;
 }
 
@@ -38,16 +38,16 @@
 .btn-select-image {
     display: inline-block;
     padding: 8px 16px;
-    border: 1px solid red;
-    color: red;
-    border-radius: 5px;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    border-radius: var(--radius-md);
     cursor: pointer;
     font-weight: bold;
     transition: 0.3s;
 }
 
 .btn-select-image:hover {
-    background: red;
+    background: var(--color-primary);
     color: #fff;
 }
 
@@ -63,7 +63,7 @@
 .form__error {
     min-height: 20px;
     margin-bottom: 5px;
-    color: red;
+    color: var(--color-error);
     text-align: left;
     font-size: 14px;
     line-height: 1.4;
@@ -74,8 +74,8 @@
     padding: 10px;
     width: 100%;
     height: 40px;
-    border: 1px solid #ddd;
-    border-radius: 3px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
 }
 
 .form__button {
@@ -87,8 +87,8 @@
     width: 100%;
     height: 50px;
     border: none;
-    border-radius: 3px;
-    background: red;
+    border-radius: var(--radius-md);
+    background: var(--color-primary);
     color: #fff;
     cursor: pointer;
     font-size: 16px;

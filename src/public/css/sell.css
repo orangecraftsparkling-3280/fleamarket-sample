@@ -12,8 +12,9 @@
 }
 
 .sub-title {
+    font-family: var(--font-heading);
     font-size: 18px;
-    color: #555;
+    color: var(--color-text-muted);
     margin: 20px 0 10px;
     font-weight: bold;
 }
@@ -48,13 +49,14 @@
 .image-upload-area {
     width: 100%;
     aspect-ratio: 4 / 3;
-    border: 2px dashed #ccc;
+    border: 2px dashed var(--color-border);
+    border-radius: var(--radius-lg);
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background-color: #f9f9f9;
+    background-color: var(--color-bg);
 }
 
 #image-preview {
@@ -77,7 +79,7 @@
     z-index: 2;
     background: rgba(255, 255, 255, 0.8);
     padding: 10px 20px;
-    border-radius: 4px;
+    border-radius: var(--radius-md);
     cursor: pointer;
 }
 
@@ -88,17 +90,17 @@
 .btn-select-image {
     display: inline-block;
     padding: 8px 20px;
-    border: 1px solid red;
-    color: red;
-    background-color: #fff;
-    border-radius: 5px;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    background-color: var(--color-surface);
+    border-radius: var(--radius-md);
     cursor: pointer;
     font-weight: bold;
     transition: 0.3s;
 }
 
 .btn-select-image:hover {
-    background: red;
+    background: var(--color-primary);
     color: #fff;
 }
 
@@ -116,34 +118,34 @@
 .category-checkbox label {
     display: inline-block;
     padding: 6px 18px;
-    border: 1px solid red;
-    border-radius: 20px;
-    color: red;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-pill);
+    color: var(--color-primary);
     font-size: 14px;
     cursor: pointer;
     transition: 0.2s;
 }
 
 .category-checkbox input[type="checkbox"]:checked + label {
-    background-color: red;
-    border-color: red;
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
     color: #fff;
 }
 
 .condition-select {
     width: 100%;
     padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #ffffff;
-    color: #333333;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+    color: var(--color-text);
     cursor: pointer;
     outline: none;
     transition: background-color 0.2s;
 }
 
 .condition-select:focus {
-    background-color: #666666;
+    background-color: var(--color-primary);
     color: #ffffff;
 }
 
@@ -155,14 +157,14 @@
 .form__input--text input {
     width: 100%;
     padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
     box-sizing: border-box;
     font-size: 16px;
 }
 
 .form-input:focus {
-    border-color: #666;
+    border-color: var(--color-primary);
     outline: none;
 }
 
@@ -187,7 +189,7 @@
 .form__error {
     min-height: 20px;
     margin-bottom: 5px;
-    color: red;
+    color: var(--color-error);
     text-align: left;
     font-size: 14px;
     line-height: 1.4;
@@ -197,10 +199,10 @@
     width: 100%;
     padding: 16px;
     margin-top: 30px;
-    background-color: red;
+    background-color: var(--color-primary);
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: var(--radius-md);
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;

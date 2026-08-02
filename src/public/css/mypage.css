@@ -25,7 +25,7 @@
 }
 
 .default-circle {
-    background-color: gray;
+    background-color: var(--color-border);
 }
 
 .user-name {
@@ -36,21 +36,23 @@
 .btn-edit-profile {
     display: inline-block;
     padding: 8px 16px;
-    border: 1px solid red;
-    color: red;
-    border-radius: 4px;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    border-radius: var(--radius-pill);
     text-decoration: none;
     font-weight: bold;
     font-size: 14px;
+    transition: background-color var(--transition-base), color var(--transition-base);
 }
 
 .btn-edit-profile:hover {
-    background-color: white;
+    background-color: var(--color-primary);
+    color: #fff;
 }
 
 .mypage-tabs {
     display: flex;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid var(--color-border);
     margin-bottom: 20px;
 }
 
@@ -59,11 +61,11 @@
     text-decoration: none;
     cursor: pointer;
     font-weight: bold;
-    color: gray;
+    color: var(--color-text-muted);
 }
 
 .tab-item.active {
-    color: red;
+    color: var(--color-primary);
 }
 
 .item-grid {
@@ -76,15 +78,22 @@
 .item-card {
     display: block;
     text-decoration: none;
-    color: #333;
+    color: var(--color-text);
 }
 
 .item-image-wrapper {
     width: 100%;
     aspect-ratio: 1 / 1;
     overflow: hidden;
-    border-radius: 4px;
-    background-color: #f5f5f5;
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+.item-card:hover .item-image-wrapper {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
 }
 
 .item-image-wrapper img {
@@ -117,17 +126,17 @@
     display: inline-block;
     font-size: 13px;
     padding: 4px 10px;
-    border-radius: 4px;
-    border: 1px solid lightgray;
-    background: white;
-    color: #333;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text);
     cursor: pointer;
     text-decoration: none;
 }
 
 .btn-delete-item {
-    color: red;
-    border-color: red;
+    color: var(--color-error);
+    border-color: var(--color-error);
 }
 
 .pagination-wrapper {
@@ -167,16 +176,16 @@
     min-width: 36px;
     height: 36px;
     padding: 0 10px;
-    border: 1px solid lightgray;
-    border-radius: 4px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
     text-decoration: none;
-    color: #333;
+    color: var(--color-text);
     font-size: 14px;
 }
 
 .pagination-wrapper nav span[aria-current] span {
-    background-color: #ff4d4d;
-    border-color: #ff4d4d;
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
     color: #fff;
 }
 

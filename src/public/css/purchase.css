@@ -26,7 +26,7 @@
     display: flex;
     gap: 20px;
     padding-bottom: 30px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--color-border);
     margin-bottom: 30px;
 }
 
@@ -34,7 +34,7 @@
     width: 150px;
     height: 150px;
     object-fit: cover;
-    border-radius: 4px;
+    border-radius: var(--radius-md);
     flex-shrink: 0;
 }
 
@@ -58,18 +58,18 @@ section h3 {
     max-width: 300px;
     padding: 10px;
     height: 45px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
 }
 
 .payment-select:focus {
-    background-color: #666666;
+    background-color: var(--color-primary);
     color: #ffffff;
 }
 
 .payment-selection,
 .address-selection {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--color-border);
     padding-bottom: 30px;
     margin-bottom: 30px;
 }
@@ -82,15 +82,16 @@ section h3 {
 }
 
 .address-header a {
-    color: #007bff;
+    color: var(--color-link);
     text-decoration: none;
     font-size: 14px;
 }
 
 .summary-card {
-    border: 1px solid #000;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
     padding: 30px 20px;
-    background-color: #fff;
+    background-color: var(--color-surface);
     margin-bottom: 30px;
 }
 
@@ -114,7 +115,7 @@ section h3 {
 .summary-table tr:first-child th,
 .summary-table tr:first-child td {
     padding-bottom: 40px;
-    border-bottom: 2px solid #000;
+    border-bottom: 2px solid var(--color-border-strong);
 }
 
 .summary-table td {
@@ -127,10 +128,10 @@ section h3 {
     display: block;
     width: 100%;
     padding: 15px;
-    background-color: #ff0000;
+    background-color: var(--color-primary);
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: var(--radius-md);
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
@@ -143,7 +144,7 @@ section h3 {
 .form__error {
     min-height: 20px;
     margin-bottom: 5px;
-    color: red;
+    color: var(--color-error);
     text-align: left;
     font-size: 14px;
     line-height: 1.4;
